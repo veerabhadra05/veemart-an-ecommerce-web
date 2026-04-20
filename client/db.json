@@ -1,0 +1,84 @@
+{
+  "products": [
+    {
+      "productName": "Veggies",
+      "imageLink": "https://t4.ftcdn.net/jpg/02/94/35/05/360_F_294350593_jgmRP1XNU59dZZKt4imebsGjeS3SafzA.jpg",
+      "id": "tbSqS7366Co"
+    },
+    {
+      "productName": "Fruits",
+      "imageLink": "https://png.pngtree.com/png-clipart/20240415/original/pngtree-fresh-fruit-image-without-background-png-image_14820655.png",
+      "id": "52NAdTy_TnQ"
+    },
+    {
+      "productName": "Dairy Products",
+      "imageLink": "https://png.pngtree.com/png-clipart/20240506/original/pngtree-dairy-products-store-composition-png-image_15017069.png",
+      "id": "54lo3eMDgpo"
+    },
+    {
+      "productName": "Mobiles",
+      "imageLink": "https://images.stockcake.com/public/d/8/c/d8c175a6-fc7f-4c25-8da4-e91b6f86b289_large/phones-collection-display-stockcake.jpg",
+      "id": "p_nP2rP-Hmg"
+    },
+    {
+      "productName": "Headphones",
+      "imageLink": "https://rukminim2.flixcart.com/image/480/640/xif0q/headphone/i/u/l/black-earbuds-true-wireless-stereo-noise-cancelling-luhar-original-imahhaj2yhexyxkq.jpeg?q=90",
+      "id": "0scdKUSGJV0"
+    },
+    {
+      "productName": "Laptop",
+      "imageLink": "https://imagemobiles.com/cdn/shop/collections/laptop-photo-1-1-ratio.png?v=1761386919",
+      "id": "-3vvpO8yqwI"
+    },
+    {
+      "productName": "Footwear",
+      "imageLink": "https://static.vecteezy.com/system/resources/previews/055/538/154/non_2x/a-single-light-blue-athletic-shoe-is-shown-on-a-black-background-png.png",
+      "id": "FBEMY9U3ckc"
+    },
+    {
+      "productName": "Watches",
+      "imageLink": "https://rukminim2.flixcart.com/image/480/640/xif0q/watch/z/a/1/-original-imahfszd9yxgcqw7.jpeg?q=90",
+      "id": "M_cN6k4qE3o"
+    },
+    {
+      "productName": "Styling",
+      "imageLink": "https://m.media-amazon.com/images/I/71K7i3RmyEL._AC_SY350_QL15_.jpg",
+      "id": "5R9h9a8o_qs"
+    },
+    {
+      "productName": "makeup",
+      "imageLink": "https://delulucosmetics.in/cdn/shop/articles/Pasted-into-Makeup-Brands-To-Choose-From.png?v=1749456816",
+      "id": "E4Lmwvqd16s"
+    },
+    {
+      "productName": "Essence Mascara Lash Princess",
+      "imageLink": "https://cdn.dummyjson.com/product-images/beauty/essence-mascara-lash-princess/1.webp",
+      "id": "u5Dpk1hzZEY"
+    }
+  ],
+  "users": [
+    {
+      "id": "1",
+      "name": "Veerabhadrappa",
+      "email": "uilthibadri68@gmail.com",
+      "mobile": "",
+      "password": "BhadriA2004"
+    },
+    {
+      "id": "2",
+      "name": "Ulthi Veerabhadrappa",
+      "email": "uilthibadri68@gmail.com",
+      "mobile": "07330776100",
+      "password": "12345"
+    },
+    {
+      "id": "3",
+      "name": "satya",
+      "email": "akhileshm1432@gmail.com",
+      "mobile": "06303100846",
+      "password": "123"
+    }
+  ],
+  "orders": [],
+  "$schema": "./node_modules/json-server/schema.json"
+}
