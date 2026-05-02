@@ -18,6 +18,21 @@ cursor = db.cursor(dictionary=True)
 def Home():
     return {"message":"Flask server is running"}
 
+@app.route("/categories", methods=["GET"])
+def get_categories():
+    cursor.execute("SELECT id, name, image FROM categories")
+    rows = cursor.fetchall()
+
+    categories = []
+    for row in rows:
+        categories.append({
+            "id": row['id'],
+            "name": row['name'],
+            "image": row['image']
+        })
+
+    return jsonify(categories)
+
 @app.route("/register",methods=['POST'])
 def register():
     data = request.json
@@ -71,7 +86,7 @@ def add_to_cart():
     if existing:
         cursor.execute(
             "UPDATE cart SET quantity = quantity + %s WHERE id=%s",
-            (quantity, existing['id'])
+            (quantity, existing['ID'])   # ✅ FIX HERE
         )
     else:
         cursor.execute(
@@ -84,6 +99,7 @@ def add_to_cart():
 
 @app.route("/cart/<int:user_id>", methods=["GET"])
 def get_cart(user_id):
+   
     cursor.execute("""
         SELECT c.id, c.quantity, p.name, p.price, p.image
         FROM cart c
@@ -93,6 +109,24 @@ def get_cart(user_id):
 
     data = cursor.fetchall()
     return jsonify(data)
+
+@app.route("/cart/<int:id>", methods=["DELETE"])
+def remove_from_cart(id):
+    try:
+        cursor.execute("SELECT * FROM cart WHERE id=%s", (id,))
+        item = cursor.fetchone()
+
+        if not item:
+            return jsonify({"message": "Item not found"}), 404
+
+        cursor.execute("DELETE FROM cart WHERE id=%s", (id,))
+        db.commit()
+
+        return jsonify({"message": "Item removed successfully"})
+    
+    except Exception as e:
+        print("ERROR:", e)
+        return jsonify({"message": "Server error"}), 500
 
 @app.route("/place-order", methods=["POST"])
 def place_order():
@@ -130,9 +164,7 @@ def place_order():
 
 @app.route('/products', methods=['GET'])
 def get_products():
-    cursor = db.cursor()
-
-    cursor.execute("SELECT id, name, image, price,description FROM products")
+    cursor.execute("SELECT id, name, image, price,description,stock FROM products")
     rows = cursor.fetchall()
 
     products = []
@@ -142,21 +174,15 @@ def get_products():
         "title": row['name'],
         "image": row['image'],
         "price": float(row['price']),
-        "description": row['description']
+        "description": row['description'],
+        "stock": row['stock']
         })
-        # products.append({
-        #     "id": row[0],
-        #     "title": row[1],  
-        #     "image": row[2], 
-        #     "price": float(row[3]),
-        #     "description": row[4]
-        # })
+
 
     return jsonify(products)
 
 @app.route('/products/<int:id>', methods=['GET'])
 def get_product(id):
-    cursor = db.cursor()
     cursor.execute("SELECT id, name, image, price,description,stock FROM products WHERE id=%s", (id,))
     row = cursor.fetchone()
     product = {
@@ -167,16 +193,61 @@ def get_product(id):
     "description": row['description'],
     "stock": row['stock']
 }
-    # product = {
-    #     "id": row[0],
-    #     "title": row[1],
-    #     "image": row[2],
-    #     "price": row[3],
-    #     "description": row[4],
-    #     "stock": row[5]
-    # }
+
 
     return jsonify(product)
+
+@app.route("/orders/<int:user_id>", methods=["GET"])
+def get_orders(user_id):
+    cursor.execute("""
+        SELECT 
+            o.id AS order_id,
+            o.status,
+            o.payment_status,
+            o.created_at,
+
+            oi.product_id,
+            oi.quantity,
+            oi.price,
+
+            p.name,
+            p.image
+
+        FROM orders o
+        JOIN order_items oi ON o.id = oi.order_id
+        JOIN products p ON oi.product_id = p.id
+        WHERE o.user_id = %s
+        ORDER BY o.id DESC
+    """, (user_id,))
+
+    rows = cursor.fetchall()
+
+    if not rows:
+        return jsonify([])
+
+    orders = {}
+
+    for row in rows:
+        oid = row['order_id']
+
+        if oid not in orders:
+            orders[oid] = {
+                "order_id": oid,
+                "status": row['status'],
+                "payment_status": row['payment_status'],
+                "created_at": str(row['created_at']),  # ✅ fix datetime
+                "items": []
+            }
+
+        orders[oid]["items"].append({
+            "product_id": row['product_id'],
+            "name": row['name'],
+            "image": row['image'],
+            "price": float(row['price']),
+            "quantity": row['quantity']
+        })
+
+    return jsonify(list(orders.values()))
 
 if __name__ == "__main__":
     app.run(debug=True)

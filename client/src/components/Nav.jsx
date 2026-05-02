@@ -1,33 +1,56 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+
 const Nav = () => {
+  const [user, setUser] = useState(null);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const storedUser = localStorage.getItem("user");
+    if (storedUser) {
+      setUser(JSON.parse(storedUser));
+    }
+  }, []);
+
+  function handleLogout() {
+    localStorage.removeItem("user");
+    setUser(null);
+    navigate("/login");
+  }
+
   return (
-    <>
-      <div className="nav">
-        <div className="logo">
-          <img src="src/assets/images/logo.png" alt="logo"  height={'70px'}/>
-          <h1 className="title">Vee<span>Mart</span></h1>
-        </div>
-        <div className="info">
-            <Link to={'/'}>
-               <h2>Home</h2>
-            </Link>
-              
-           
-            <Link to={'/products'}>
+    <div className="nav">
+      <div className="logo">
+        <img src="src/assets/images/logo.png" alt="logo" height="70px" />
+        <h1 className="title">Vee<span>Mart</span></h1>
+      </div>
+
+      <div className="info">
+        {user ? (
+          <>
+            <Link to="/products">
               <h2>Products</h2>
             </Link>
-            <a href="">
-                <h2>Orders</h2>
-            </a>
-              <Link>
-                <h2>
-                  Cart 🛒
-                </h2>
-              </Link>
-        </div>
+
+            <Link to="/orders">
+              <h2>Orders</h2>
+            </Link>
+
+            <Link to="/cart">
+              <h2>Cart 🛒</h2>
+            </Link>
+
+            <h2 style={{ cursor: "pointer" }} onClick={handleLogout}>
+              Logout
+            </h2>
+          </>
+        ) : (
+          <Link to="/login">
+            <h2>Login</h2>
+          </Link>
+        )}
       </div>
-    </>
+    </div>
   );
 };
 

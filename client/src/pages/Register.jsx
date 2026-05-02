@@ -1,6 +1,6 @@
 import React,{useState} from "react";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 const Register = () => {
     const [formData,setFormData] = useState({
@@ -88,6 +88,13 @@ const Register = () => {
           />
 
           <button type="submit">Register</button>
+
+          <p style={{ marginTop: "10px" }}>
+            Already have an account?{" "}
+            <Link to={'/login'}>
+              Login
+            </Link>
+          </p>
         </form>
       </div>
     </>

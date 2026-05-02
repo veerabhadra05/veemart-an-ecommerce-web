@@ -5,20 +5,22 @@ const Footer = () => {
     <>
       <section className="footer">
         <div>
-        <h2>Cartify 🛒</h2>
+        <h2 className="title">Vee<span>Mart</span> 🛒</h2>
       </div>
 
       <div>
             <h2>Categories</h2>
             <ul>
-                <li>Electronics</li>
-                <li>Kitchen</li>
-                <li>Dairy Products</li>
-                <li>Kids Wear</li>
-                <li>Mens Wear</li>
-                <li>Ladies Wear</li>
-                <li>Fruits</li>
-                <li>Vegetables</li>
+                <li>Mobiles</li>
+                <li>Laptops</li>
+                <li>Footwear</li>
+                <li>Clothing</li>
+                <li>Watches</li>
+                <li>Headphones</li>
+                <li>Books</li>
+                <li>Home Appliances</li>
+                <li>Gaming</li>
+                <li>Accessories</li>
             </ul>
       </div>
 
