@@ -2,6 +2,8 @@ import React,{useState} from "react";
 import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
+import API_URL from "../api";
+
 const Register = () => {
     const [formData,setFormData] = useState({
         name:"",
@@ -30,7 +32,7 @@ const Register = () => {
 
     // Send data to db.json
     
-    axios.post("http://localhost:5000/register", formData)
+    axios.post(`${API_URL}/register`, formData)
       .then((res) => {
         toast.success(res.data.message);
         navigate('/login')

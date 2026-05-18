@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import Nav from "../components/Nav";
+import API_URL from "../api";
 
 const Orders = () => {
   const [orders, setOrders] = useState([]);
@@ -10,8 +11,7 @@ const Orders = () => {
   useEffect(() => {
     if (!user) return;
 
-    axios
-      .get(`http://localhost:5000/orders/${user.ID}`)
+    axios.get(`${API_URL}/orders/${user._id}`)
       .then((res) => {
         setOrders(res.data);
       })
@@ -26,7 +26,7 @@ const Orders = () => {
 
     <>
     <Nav/>
-      <div className="page">
+      <div className="orders-page">
       <h1>Your Orders</h1>
 
       {orders.length === 0 ? (
@@ -47,12 +47,12 @@ const Orders = () => {
                 <div
                   key={index}
                   className="item-row"
-                  // style={{
-                  //   display: "flex",
-                  //   gap: "10px",
-                  //   marginTop: "10px",
-                  //   alignItems: "center"
-                  // }}
+                  style={{
+                    display: "flex",
+                    gap: "10px",
+                    marginTop: "10px",
+                    alignItems: "center"
+                  }}
                 >
                   <img
                     src={item.image}

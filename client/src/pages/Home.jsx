@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 import Nav from "../components/Nav";
 import Footer from "../components/Footer";
 import axios from "axios";
+import { Link } from "react-router-dom";
+import API_URL from "../api";
 
 const Home = () => {
 
@@ -9,7 +11,7 @@ const Home = () => {
   const [search, setSearch] = useState("");
 
   function fetchData() {
-    axios.get("http://localhost:5000/categories")
+    axios.get(`${API_URL}/categories`)
       .then(x => {
         setCategories(x.data);
       })
@@ -30,7 +32,9 @@ const Home = () => {
         <h2 className="title">Welcome to Vee<span>Mart</span></h2>
 
         <h2>Discover the best products at unbeatable prices</h2>
-        <button>Shop now</button>
+        <Link to="/products">
+          <button>Shop now</button>
+        </Link>
       </section>
 
       <div className="search">

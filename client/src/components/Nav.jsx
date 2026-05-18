@@ -28,6 +28,9 @@ const Nav = () => {
       <div className="info">
         {user ? (
           <>
+            <Link to="/">
+              <h2>Home</h2>
+            </Link>
             <Link to="/products">
               <h2>Products</h2>
             </Link>

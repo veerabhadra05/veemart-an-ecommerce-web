@@ -2,6 +2,7 @@ import React,{ useState, useEffect } from 'react'
 import axios from 'axios'
 import Nav from '../components/Nav'
 import Footer from '../components/Footer'
+import API_URL from "../api";
 
 const Products = () => {
     const [products,setProducts] = useState([])
@@ -10,7 +11,7 @@ const Products = () => {
     const [quantity,setQuantity] = useState(1)   // ✅ NEW
 
     function fetchProducts(){
-        axios.get("http://localhost:5000/products")
+        axios.get(`${API_URL}/products`)
         .then(x=>setProducts(x.data))
         .catch(err=>console.log(err))
     }
@@ -22,7 +23,7 @@ const Products = () => {
     function handleView(id){
 
         setQuantity(1)   // ✅ reset quantity
-        axios.get(`http://localhost:5000/products/${id}`)
+        axios.get(`${API_URL}/products/${id}`)
         .then(x=>{
             setProductData(x.data)
             setViewDetails(true)
@@ -35,13 +36,13 @@ const Products = () => {
     function handleAddToCart(){
         const user = JSON.parse(localStorage.getItem("user"))
 
-        if(!user || !user.ID){
+        if(!user || !user._id){
             alert("Please login first")
             return
         }
 
-        axios.post("http://localhost:5000/add-to-cart",{
-            user_id: user.ID,
+        axios.post(`${API_URL}/add-to-cart`,{
+            user_id: user._id,
             product_id: productData.id,
             quantity: quantity
         })

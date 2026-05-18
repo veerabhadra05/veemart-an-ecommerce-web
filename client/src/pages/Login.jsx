@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from 'react-toastify';
+import API_URL from "../api";
+
 const Login = () => {
     const [show, setShow] = useState(false)
     const [formData, setFormData] = useState({
@@ -22,19 +24,21 @@ const Login = () => {
     }
     function handleSubmit(e) {
         e.preventDefault();
-        axios.post(`http://localhost:5000/login`, formData)
+        axios.post(`${API_URL}/login`, formData)
             .then((res) => {
+                if(res.data.message == 'Login Success')
+                {
                 toast.success(res.data.message);
                 localStorage.setItem('user', JSON.stringify(res.data.user))
-
                 navigate('/')
+                }
+                else if(res.data.message == 'Invalid Credentials'){
+                    toast.error(res.data.message)
+                    navigate('/login')
+                }
             })
             .catch(err => {
-                if (err.response) {
-                    toast.error(err.response.data.message)
-                } else {
-                    console.log('Server Error')
-                }
+                console.log('Server Error')
             })
     }
 
