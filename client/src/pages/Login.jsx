@@ -29,8 +29,15 @@ const Login = () => {
                 if(res.data.message == 'Login Success')
                 {
                 toast.success(res.data.message);
+                console.log(res.data)
                 localStorage.setItem('user', JSON.stringify(res.data.user))
-                navigate('/')
+                if (res.data.user.role === "admin"){
+                    navigate('/admin/*')
+                }
+                else{
+                    console.log(res.data.role)
+                    navigate('/')
+                }
                 }
                 else if(res.data.message == 'Invalid Credentials'){
                     toast.error(res.data.message)

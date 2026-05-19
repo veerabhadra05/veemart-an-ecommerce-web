@@ -61,7 +61,8 @@ def register():
     users_collection.insert_one({
         "name": data["name"],
         "email": data["email"],
-        "password": data["password"]
+        "password": data["password"],
+        "role":"user"
     })
 
     return jsonify({"message": "User Registered Successfully"})
@@ -73,7 +74,7 @@ def login():
 
     user = users_collection.find_one({
         "email": data["email"],
-        "password": data["password"]
+        "password": data["password"],
     })
 
     if user:
@@ -269,5 +270,124 @@ def get_orders(user_id):
         })
 
     return jsonify(result)
+
+#admin-routes
+
+@app.route("/admin/add-product", methods=["POST"])
+def add_product():
+
+    data = request.json
+
+    products_collection.insert_one({
+        "name": data["name"],
+        "image": data["image"],
+        "price": data["price"],
+        "description": data["description"],
+        "stock": data["stock"],
+        "category": data["category"]
+    })
+
+    return jsonify({
+        "message": "Product added successfully"
+    })
+
+
+@app.route("/admin/product/<id>", methods=["DELETE"])
+def delete_product(id):
+
+    products_collection.delete_one({
+        "_id": ObjectId(id)
+    })
+
+    return jsonify({
+        "message": "Product deleted"
+    })
+
+@app.route("/admin/product/<id>", methods=["PUT"])
+def update_product(id):
+
+    data = request.json
+
+    products_collection.update_one(
+        {"_id": ObjectId(id)},
+        {
+            "$set": {
+                "name": data["name"],
+                "image": data["image"],
+                "price": data["price"],
+                "description": data["description"],
+                "stock": data["stock"],
+                "category": data["category"]
+            }
+        }
+    )
+
+    return jsonify({
+        "message": "Product updated"
+    })
+
+
+@app.route("/admin/orders", methods=["GET"])
+def get_all_orders():
+
+    orders = list(orders_collection.find())
+
+    result = []
+
+    for order in orders:
+
+        result.append({
+
+            "_id": str(order["_id"]),
+
+            "user_id": order["user_id"],
+
+            "status": order["status"],
+
+            "payment_status": order["payment_status"],
+
+            "items": order["items"]
+
+        })
+
+    return jsonify(result)
+
+@app.route("/admin/order-status/<id>", methods=["PUT"])
+def update_order_status(id):
+
+    data = request.json
+
+    orders_collection.update_one(
+
+        {"_id": ObjectId(id)},
+
+        {
+            "$set": {
+
+                "status": data["status"]
+
+            }
+        }
+    )
+
+    return jsonify({
+        "message": "Order Status Updated"
+    })
+
+@app.route("/admin/stats", methods=["GET"])
+def admin_stats():
+
+    products = products_collection.count_documents({})
+
+    orders = orders_collection.count_documents({})
+
+    users = users_collection.count_documents({})
+
+    return jsonify({
+        "products": products,
+        "orders": orders,
+        "users": users
+    })
+
 if __name__ == "__main__":
     app.run(debug=True)
