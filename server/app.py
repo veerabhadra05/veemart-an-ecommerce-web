@@ -386,7 +386,7 @@ def admin_stats():
     return jsonify({
         "products": products,
         "orders": orders,
-        "users": users
+        "users": users - 1
     })
 
 if __name__ == "__main__":

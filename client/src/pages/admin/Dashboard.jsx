@@ -37,39 +37,49 @@ const Dashboard = () => {
     }, []);
 
     return (
+        <div className="flex min-h-screen bg-[#f5f7fb]">
 
-        <div className="flex bg-gray-100 min-h-screen">
+    <AdminSidebar />
 
-            <AdminSidebar />
+    <div className="flex-1 p-10">
 
-            <div className="flex-1 p-8">
+        <div className="mb-10">
 
-                <h1 className="text-3xl font-bold mb-8">
-                    Dashboard
-                </h1>
+            <h1 className="text-4xl font-bold text-gray-800">
+                Dashboard
+            </h1>
 
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-
-                    <DashboardCard
-                        title="Total Products"
-                        value={stats.products}
-                    />
-
-                    <DashboardCard
-                        title="Total Orders"
-                        value={stats.orders}
-                    />
-
-                    <DashboardCard
-                        title="Total Users"
-                        value={stats.users}
-                    />
-
-                </div>
-
-            </div>
+            <p className="text-gray-500 mt-2">
+                Manage your ecommerce store
+            </p>
 
         </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+
+            <DashboardCard
+                title="Total Products"
+                value={stats.products}
+                icon="📦"
+            />
+
+            <DashboardCard
+                title="Total Orders"
+                value={stats.orders}
+                icon="🛒"
+            />
+
+            <DashboardCard
+                title="Total Users"
+                value={stats.users}
+                icon="👤"
+            />
+
+        </div>
+
+    </div>
+
+</div>
     );
 };
 

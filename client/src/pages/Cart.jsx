@@ -68,15 +68,6 @@ const Cart = () => {
               <div
                 key={item.id}
                 className="card item-row"
-                style={{
-                  display: "flex",
-                  gap: "20px",
-                  marginBottom: "15px",
-                  border: "1px solid #ccc",
-                  padding: "10px",
-                  borderRadius: "10px",
-                  alignItems: "center",
-                }}
               >
                 <img src={item.image} alt="" width="100" />
 

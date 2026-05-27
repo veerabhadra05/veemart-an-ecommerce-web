@@ -1,7 +1,10 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap');
-@import "tailwindcss";
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+/* @import "tailwindcss";  */
 *{
-    padding: 0;margin: 0;
+    padding: 0;margin: 0;box-sizing: border-box;
 }
 /* navbar */
 .nav{
@@ -12,6 +15,10 @@
     justify-content: space-between;
     align-items: center;
     font-family: Georgia, 'Times New Roman', Times, serif;
+    position: sticky;
+    top: 0;
+    z-index: 9999;
+    padding: 0 20px;
 }
 .logo{
     margin-left: 20px;
@@ -29,21 +36,59 @@
 }
 .info{
     display: flex;
-    justify-content: space-evenly;
+    /* justify-content: space-evenly; */
     gap: 20px;
     align-items: center;
-    margin-right: 40px;
+    /* margin-right: 40px; */
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
-.info a{
+.nav-links{
     text-decoration: none;
     color: white;
-    transition: all 0.1s;
+    transition: all 0.3s ease;
+    font-size: 22px;
+    font-weight: 600;
+    position: relative;
+    padding: 5px 0;
 }
-.info a:hover{
+
+/* HOVER EFFECT */
+
+.nav-links:hover{
     color: rgb(255, 208, 0);
-    transform: scale(1.06);
+    cursor: pointer;
 }
+
+/* ACTIVE PAGE */
+
+.nav-links.active{
+    color: orange;
+}
+
+/* UNDERLINE */
+
+.nav-links::after{
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: -4px;
+
+    width: 0%;
+    height: 2px;
+
+    background-color: orange;
+
+    transition: width 0.3s ease;
+    pointer-events: none;
+}
+
+/* HOVER UNDERLINE */
+
+.nav-links:hover::after{
+    width: 100%;
+}
+
+
 
 /* welcome */
 .welcome{
@@ -58,6 +103,12 @@
     justify-content: center;
     align-items: center;
     gap: 20px;
+    min-height: 300px;
+    padding: 20px;
+    text-align: center;
+}
+.welcome h2{
+    font-size: 30px;
 }
 
 .welcome button{
@@ -76,12 +127,14 @@
 /* product-categories */
 .product-categories{
     display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
-    margin: 0px 100px 40px 100px;
+    grid-template-columns: repeat(auto-fit,minmax(220px,1fr));
+    gap: 30px;
+    margin: 30px;
 }
 .product-categories img{
     height: 220px;
-    width: 250px;
+    width: 100%;
+    max-width: 250px;
     background-color: white;
     border-radius: 10px;
     box-shadow: 0 0 10px black;
@@ -127,7 +180,8 @@ ul{
 }
 .product-card{
     height: 320px;
-    width: 250px;
+    width: 100%;
+    max-width: 280px;
     padding: 10px;
     box-shadow: 0 0 10px ;
     border-radius: 20px;
@@ -140,7 +194,9 @@ ul{
     transform: translateY(-10px);
 }
 .product-card img{
-    margin-bottom: 10px;
+    width: 100%;
+    max-width: 200px;
+    object-fit: contain;
 }
 .product-card button{
     cursor: pointer;
@@ -172,7 +228,10 @@ ul{
     background-color: white;
     text-align: center;
     height: 80%;
-    width: 400px;
+    width: 90%;
+    max-width: 400px;
+    max-height: 90vh;
+    overflow-y: auto;
     position: relative;
     display: flex;
     flex-direction:column ;
@@ -207,7 +266,8 @@ ul{
 .register-form, .login-form{
     display: flex;
     flex-direction: column;
-    width: 300px;
+    width: 90%;
+    max-width: 350px;
     gap: 10px;
 }
 .register-form input, .login-form input{
@@ -239,7 +299,7 @@ ul{
 }
 
 .password-field input {
-  width: 80%;
+  width: 100%;
   padding: 10px 45px 10px 12px; /* more space for icon */
   border-radius: 12px;
   border: 2px solid #444;
@@ -253,7 +313,7 @@ ul{
 
 .password-field img {
   position: absolute;
-  right: 12px;
+  right: 15px;
   top: 30%;
   height: 18px;
   width: 18px;
@@ -282,4 +342,126 @@ ul{
     padding: 10px;
     margin-bottom: 10px;
     border-radius: 10px;
+}
+
+
+/* Admin Pages */
+.sidebar{
+    background-color: black;
+}
+
+/* =========================
+   MOBILE NAVBAR
+========================= */
+
+.hamburger{
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    gap: 5px;
+    cursor: pointer;
+    z-index: 10001;
+    margin-right: 20px;
+}
+
+.hamburger span{
+    width: 25px;
+    height: 3px;
+    background-color: white;
+    border-radius: 5px;
+    transition: all 0.4s ease;
+}
+
+.nav-links{
+    font-weight: bolder;
+}
+
+/* MOBILE */
+
+@media screen and (max-width: 768px){
+
+    .nav{
+        padding: 0 10px;
+        position: relative;
+    }
+
+    .hamburger{
+        display: flex;
+    }
+
+    .info{
+        position: fixed;
+        top: 75px;
+        right: -100%;
+        width: 260px;
+        height: calc(100vh - 75px);
+
+        background-color: rgba(0,0,0,0.96);
+
+        flex-direction: column;
+        justify-content: flex-start;
+        align-items: center;
+
+        padding-top: 40px;
+        gap: 35px;
+
+        transition: right 0.4s ease, opacity 0.3s ease;
+
+        z-index: 10000;
+        /* pointer-events: none; */
+
+        box-shadow: -5px 0 15px rgba(0,0,0,0.4);
+    }
+
+    .show-menu{
+        right: 0;
+    }
+
+    .info a{
+        font-size: 20px;
+    }
+
+    .welcome h2{
+        font-size: 25px;
+    }
+}
+
+.hamburger.active span:nth-child(1){
+    transform: rotate(45deg) translateY(11px);
+}
+
+.hamburger.active span:nth-child(2){
+    opacity: 0;
+}
+
+.hamburger.active span:nth-child(3){
+    transform: rotate(-45deg) translateY(-11px);
+}
+
+.item-row{
+    display: flex;
+    gap: 20px;
+    align-items: center;
+    flex-wrap: wrap;
+    padding: 20px 10px;
+}
+
+.item-row img{
+    width: 100px;
+    border-radius: 10px;
+}
+
+
+@media screen and (max-width: 600px){
+
+    .item-row{
+        /* flex-direction: column; */
+        text-align: center;
+      
+    }
+
+    .item-row img{
+        width: 120px;
+        height: 118px;
+    }
 }

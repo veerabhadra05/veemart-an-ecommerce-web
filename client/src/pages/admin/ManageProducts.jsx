@@ -82,7 +82,7 @@ const ManageProducts = () => {
 
                 <div className="overflow-x-auto bg-white rounded-xl shadow-md">
 
-                    <table className="w-full">
+                    <table className="w-full text-sm">
 
                         <thead className="bg-gray-200">
 
@@ -119,7 +119,7 @@ const ManageProducts = () => {
 
                                     <tr
                                         key={product.id}
-                                        className="border-b"
+                                        className="border-b hover:bg-gray-50 transition"
                                     >
 
                                         <td className="p-4">
@@ -127,8 +127,7 @@ const ManageProducts = () => {
                                             <img
                                                 src={product.image}
                                                 alt={product.name}
-                                                className="w-20 h-20 object-cover rounded-md"
-                                                height={'200px'}
+                                                className="w-16 h-16 object-cover rounded-lg border"
                                             />
 
                                         </td>
@@ -149,14 +148,14 @@ const ManageProducts = () => {
 
                                             <button
                                                 onClick={() => navigate(`/admin/edit-product/${product.id}`)}
-                                                className="bg-blue-500 text-white px-4 py-2 rounded-md"
+                                                className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg transition"
                                             >
                                                 Edit
                                             </button>
 
                                             <button
                                                 onClick={() => handleDelete(product._id)}
-                                                className="bg-red-500 text-white px-4 py-2 rounded-md"
+                                                className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg transition"
                                             >
                                                 Delete
                                             </button>

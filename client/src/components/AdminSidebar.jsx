@@ -1,5 +1,14 @@
 import React from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+
+import {
+    FaBox,
+    FaShoppingCart,
+    FaPlus,
+    FaHome,
+    FaSignOutAlt
+} from "react-icons/fa";
+
+import { NavLink, useNavigate } from 'react-router-dom';
 
 const AdminSidebar = () => {
 
@@ -9,43 +18,83 @@ const AdminSidebar = () => {
 
         localStorage.removeItem("user");
 
-        navigate('/login');
+        navigate("/login");
     }
+
+    const linkClass =
+        "flex items-center gap-3 px-4 py-3 rounded-xl transition text-gray-300 hover:bg-white/10 hover:text-white";
+
+    const activeClass =
+        "bg-white text-black font-semibold";
 
     return (
 
-        <div className="w-64 min-h-screen bg-gray-900 text-white p-5">
+        <div className="w-[260px] min-h-screen bg-[#111827] text-white p-6 flex flex-col">
 
-            <h1 className="text-2xl font-bold mb-10">
-                Admin Panel
-            </h1>
+            <div className="mb-10">
 
-            <div className="flex flex-col gap-5">
+                <h1 className="text-3xl font-bold">
+                    VeeMart
+                </h1>
 
-                <Link to="/admin">
-                    Dashboard
-                </Link>
-
-                <Link to="/admin/products">
-                    Products
-                </Link>
-
-                <Link to="/admin/add-product">
-                    Add Product
-                </Link>
-
-                <Link to="/admin/orders">
-                    Orders
-                </Link>
-
-                <button
-                    onClick={handleLogout}
-                    className="bg-red-500 px-4 py-2 rounded-md mt-5"
-                >
-                    Logout
-                </button>
+                <p className="text-gray-400 text-sm mt-1">
+                    Admin Panel
+                </p>
 
             </div>
+
+            <div className="flex flex-col gap-3">
+
+                <NavLink
+                    to="/admin"
+                    end
+                    className={({ isActive }) =>
+                        `${linkClass} ${isActive ? activeClass : ""}`
+                    }
+                >
+                    <FaHome />
+                    Dashboard
+                </NavLink>
+
+                <NavLink
+                    to="/admin/products"
+                    className={({ isActive }) =>
+                        `${linkClass} ${isActive ? activeClass : ""}`
+                    }
+                >
+                    <FaBox />
+                    Products
+                </NavLink>
+
+                <NavLink
+                    to="/admin/add-product"
+                    className={({ isActive }) =>
+                        `${linkClass} ${isActive ? activeClass : ""}`
+                    }
+                >
+                    <FaPlus />
+                    Add Product
+                </NavLink>
+
+                <NavLink
+                    to="/admin/orders"
+                    className={({ isActive }) =>
+                        `${linkClass} ${isActive ? activeClass : ""}`
+                    }
+                >
+                    <FaShoppingCart />
+                    Orders
+                </NavLink>
+
+            </div>
+
+            <button
+                onClick={handleLogout}
+                className="mt-auto bg-red-500 hover:bg-red-600 py-3 rounded-xl flex items-center justify-center gap-2 transition"
+            >
+                <FaSignOutAlt />
+                Logout
+            </button>
 
         </div>
     );
