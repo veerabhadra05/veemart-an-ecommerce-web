@@ -133,7 +133,7 @@ const ManageProducts = () => {
                                         </td>
 
                                         <td className="p-4">
-                                            {product.name}
+                                            {product.title}
                                         </td>
 
                                         <td className="p-4">

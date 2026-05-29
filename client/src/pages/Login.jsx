@@ -3,6 +3,8 @@ import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from 'react-toastify';
 import API_URL from "../api";
+import showIcon from "../assets/images/show.png";
+import hideIcon from "../assets/images/hide.png";
 
 const Login = () => {
     const [show, setShow] = useState(false)
@@ -76,7 +78,7 @@ const Login = () => {
                             required />
 
                         <img onClick={toggle}
-                            src={show ? "src/assets/images/hide.png" : "src/assets/images/show.png"} alt="show|hide"
+                            src={show ? hideIcon : showIcon} alt="show|hide"
                             height={'20px'} width={'20px'} />
                     </div>
 

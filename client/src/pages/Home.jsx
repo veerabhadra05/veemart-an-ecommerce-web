@@ -37,11 +37,10 @@ const Home = () => {
         </Link>
       </section>
 
-      <div className="search">
         <h2 style={{ textAlign: 'center', color: 'orangeRed', fontSize: '35px',margin:'50px 50px' }}>
           Shop by Category
         </h2>
-      </div>
+     
 
       <section className="product-categories">
 

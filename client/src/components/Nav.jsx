@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
-
+import logo from "../assets/images/logo.png";
 const Nav = () => {
   const [user, setUser] = useState(null);
   const navigate = useNavigate();
@@ -26,7 +26,7 @@ const Nav = () => {
   return (
     <div className="nav">
       <div className="logo">
-        <img src="src/assets/images/logo.png" alt="logo" height="70px" />
+        <img src= {logo} alt="logo" height="70px" />
         <h1 className="title">Vee<span>Mart</span></h1>
       </div>
 

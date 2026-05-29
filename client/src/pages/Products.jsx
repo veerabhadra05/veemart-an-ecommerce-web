@@ -8,7 +8,7 @@ const Products = () => {
     const [products,setProducts] = useState([])
     const [viewDetails,setViewDetails] = useState(false)
     const [productData,setProductData] = useState({})
-    const [quantity,setQuantity] = useState(1)   // ✅ NEW
+    const [quantity,setQuantity] = useState(1)  
 
     function fetchProducts(){
         axios.get(`${API_URL}/products`)
@@ -32,7 +32,7 @@ const Products = () => {
         .catch(err=>console.log(err))
     }
 
-    // ✅ ADD TO CART FUNCTION
+    // ADD TO CART FUNCTION
     function handleAddToCart(){
         const user = JSON.parse(localStorage.getItem("user"))
 
@@ -57,7 +57,8 @@ const Products = () => {
     <>
         <Nav/>
 
-        <div style={{margin:'80px 50px'}} className="products">
+        <h1 style={{ textAlign: 'center', color: 'orangeRed', fontSize: '35px', margin:'20px' }}>Our Products</h1>
+        <div className="products">
             {
                 products.map((product)=>(
                     <div className="product-card" key={product.id}>
@@ -65,7 +66,7 @@ const Products = () => {
                         <img src={product.image} alt="" height={'200px'} width={'200px'} />
                         <p><b>Price: </b>₹{product.price}</p>
 
-                        {/* ✅ STOCK DISPLAY */}
+                        {/*STOCK DISPLAY */}
                         <p style={{color: product.stock > 0 ? "green" : "red"}}>
                             {product.stock > 0 ? "In Stock" : "Out of Stock"}
                         </p>
@@ -89,19 +90,19 @@ const Products = () => {
                 <p><b>Price: </b>₹{productData.price}</p>
                 <p><b>Description:</b> {productData.description}</p>
 
-                {/* ✅ STOCK */}
+                {/* STOCK */}
                 <p className='stock'>
                     {productData.stock > 0 ? 'In Stock' : 'Out of Stock'}
                 </p>
 
-                {/* ✅ QUANTITY SELECTOR */}
+                {/*QUANTITY SELECTOR */}
                 <div style={{marginTop:"10px"}}>
                     <button onClick={()=>setQuantity(q => q > 1 ? q-1 : 1)}>-</button>
                     <span style={{margin:"0 10px"}}>{quantity}</span>
                     <button onClick={()=>setQuantity(q => q+1)}>+</button>
                 </div>
 
-                {/* ✅ ADD TO CART BUTTON */}
+                {/*ADD TO CART BUTTON */}
                 <button 
                     onClick={handleAddToCart}
                     disabled={productData.stock === 0}
