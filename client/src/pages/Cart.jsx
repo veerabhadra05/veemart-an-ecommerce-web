@@ -71,7 +71,7 @@ const Cart = () => {
               >
                 <img src={item.image} alt="" width="100" />
 
-                <div>
+                <div className="item-details">
                   <h3>{item.name}</h3>
                   <p>₹{item.price}</p>
                   <p>Qty: {item.quantity}</p>
