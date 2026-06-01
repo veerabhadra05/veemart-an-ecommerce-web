@@ -57,7 +57,7 @@ const Products = () => {
     <>
         <Nav/>
 
-        <h1 style={{ textAlign: 'center', color: 'orangeRed', fontSize: '35px', margin:'20px' }}>Our Products</h1>
+        <h1 className='products-heading'>Our Products</h1>
         <div className="products">
             {
                 products.map((product)=>(

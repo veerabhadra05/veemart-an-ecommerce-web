@@ -22,7 +22,7 @@ const Cart = () => {
     fetchCart();
   }, []);
 
-  // ✅ REMOVE ITEM
+  //  REMOVE ITEM
   function handleRemove(id) {
     axios.delete(`${API_URL}/cart/${id}`)
       .then(() => {
@@ -31,7 +31,7 @@ const Cart = () => {
       .catch((err) => console.log(err));
   }
 
-  // ✅ PLACE ORDER
+  //  PLACE ORDER
   function handleOrder() {
     axios.post(`${API_URL}/place-order`, {
     user_id: user._id,
@@ -43,7 +43,7 @@ const Cart = () => {
       .catch((err) => console.log(err));
   }
 
-  // ✅ TOTAL CALCULATION
+  //  TOTAL CALCULATION
   const total = cart.reduce(
     (sum, item) => sum + item.price * item.quantity,
     0

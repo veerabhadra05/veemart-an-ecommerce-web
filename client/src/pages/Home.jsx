@@ -37,7 +37,7 @@ const Home = () => {
         </Link>
       </section>
 
-        <h2 style={{ textAlign: 'center', color: 'orangeRed', fontSize: '35px',margin:'50px 50px' }}>
+        <h2 className="category-heading" >
           Shop by Category
         </h2>
      

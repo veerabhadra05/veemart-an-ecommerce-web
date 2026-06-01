@@ -93,8 +93,12 @@
 .nav-links:hover::after {
     width: 100%;
 }
-
-
+/* style={{ textAlign: 'center', color: 'orangeRed', fontSize: '35px',margin:'50px 50px' }} */
+.category-heading{
+    text-align: center;
+    color: orangered;
+    font-size: 35px;
+}
 
 /* welcome */
 .welcome {
@@ -180,7 +184,7 @@
 ul {
     list-style-type: circle;
     line-height: 25px;
-    margin: 10px 0px 0px 25px;
+    margin: 10px 0px 0px 20px;
 
 }
 
@@ -379,6 +383,13 @@ ul {
     border-radius: 10px;
 }
 
+.products-heading{
+    text-align: center;
+    color: orangered;
+    font-size: 35px;
+    margin: 20px;
+}
+
 
 /* Admin Pages */
 .sidebar {
@@ -488,7 +499,15 @@ ul {
 
 
 @media screen and (max-width: 600px) {
-
+    .nav{
+        height: 65px;
+    }
+    .title{
+        font-size: 20px;
+    }
+    .logo img{
+        height: 50px;
+    }
     .welcome{
         width: 95%;
         height: 200px;
@@ -504,20 +523,29 @@ ul {
     /* categories-in-home */
     .product-categories {
         display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(130px, 2fr));
+        grid-template-columns: 1fr 1fr;
     }
 
     .product-categories img {
         height: 130px;
-        width: 90%;
+        width: 70%;
         max-width: 200px;
+    }
+
+    .category-heading{
+        font-size: 30px;
     }
 
     /* products-page */
     .products{
         display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(110px, 2fr));
+        grid-template-columns: 1fr 1fr;
         justify-items: center;
+        margin-top: 20px;
+    }
+    .products-heading{
+        font-size: 25px;
+        margin: 10px;
     }
     .product-card {
         height: 230px;
@@ -555,9 +583,17 @@ ul {
     }
 
     .item-row img {
-        width: 120px;
-        height: 118px;
+        width: 80px;
+        height: 90px;
     }
+
+    .orders-page h1{
+        font-size: 20px;
+    }
+    .orders-page .card h3{
+        font-size: 15px;
+    }
+
 
     /* cart-page */
     .cart-page h1,.cart-page h2{
@@ -572,10 +608,6 @@ ul {
         flex-direction: column;
         align-items: flex-start;
     }
-    .btn{
-        padding: 20px 2px;
-    }
-    
 
     /* footer */
     .footer h2{
@@ -583,5 +615,8 @@ ul {
     }
     .footer li{
         font-size: 10px;
+    }
+    .footer ul{
+        line-height: 15px;
     }
 }
