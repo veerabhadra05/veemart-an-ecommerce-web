@@ -39,7 +39,7 @@ async function handleOrder() {
     const orderResponse = await axios.post(
       `${API_URL}/create-razorpay-order`,
       {
-        user_id = user._id
+        user_id : user._id
       }
     );
 
