@@ -76,7 +76,12 @@ async function handleOrder() {
           }
         );
 
+      if (verify.data.success) {
         toast.success("Payment Successful");
+        fetchCart();
+      } else {
+        toast.error("Verification Failed");
+      }
 
         fetchCart();
       },

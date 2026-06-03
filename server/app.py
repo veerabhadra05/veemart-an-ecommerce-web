@@ -7,6 +7,8 @@ from bson.objectid import ObjectId
 import razorpay
 import hmac
 import hashlib
+from datetime import datetime
+from zoneinfo import ZoneInfo
 
 app = Flask(__name__)
 CORS(app)
@@ -21,6 +23,7 @@ razorpay_client = razorpay.Client(
     auth=(RAZORPAY_KEY_ID, RAZORPAY_KEY_SECRET)
 )
 
+ist_now = datetime.now(ZoneInfo("Asia/Kolkata"))
 
 try:
     client.admin.command('ping')
@@ -277,7 +280,8 @@ def get_orders(user_id):
             "status": order["status"],
             "payment_status": order["payment_status"],
             "items": order["items"],
-            "total_amount": order["total_amount"]
+            "total_amount": order["total_amount"],
+            "created_at": order.get("created_at", "")
         })
 
     return jsonify(result)
@@ -452,6 +456,8 @@ def verify_payment():
 
             "total_amount": total_amount,
 
+            "created_at": ist_now.strftime("%Y-%m-%d %I:%M:%S %p"),
+
             "razorpay_order_id":
                 data["razorpay_order_id"],
 
@@ -497,7 +503,7 @@ def create_razorpay_order():
         amount += (product["price"]* item["quantity"])
 
     order = razorpay_client.order.create({
-        "amount": amount,
+        "amount": amount * 100,
         "currency": "INR"
     })
 
