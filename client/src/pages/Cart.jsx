@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import Nav from "../components/Nav";
 import API_URL from "../api";
+import { toast } from "react-toastify";
 
 const Cart = () => {
   const [cart, setCart] = useState([]);
@@ -32,16 +33,72 @@ const Cart = () => {
   }
 
   //  PLACE ORDER
-  function handleOrder() {
-    axios.post(`${API_URL}/place-order`, {
-    user_id: user._id,
-})
-      .then((res) => {
-        alert(res.data.message);
+async function handleOrder() {
+  try {
+
+    const orderResponse = await axios.post(
+      `${API_URL}/create-razorpay-order`,
+      {
+        user_id = user._id
+      }
+    );
+
+    const order = orderResponse.data;
+
+    const options = {
+      key: import.meta.env.VITE_RAZORPAY_KEY_ID,
+
+      amount: order.amount,
+
+      currency: order.currency,
+
+      order_id: order.id,
+
+      name: "VeeMart",
+
+      description: "Product Purchase",
+
+      handler: async function (response) {
+
+        const verify = await axios.post(
+          `${API_URL}/verify-payment`,
+          {
+            user_id: user._id,
+
+            razorpay_order_id:
+              response.razorpay_order_id,
+
+            razorpay_payment_id:
+              response.razorpay_payment_id,
+
+            razorpay_signature:
+              response.razorpay_signature
+          }
+        );
+
+        toast.success("Payment Successful");
+
         fetchCart();
-      })
-      .catch((err) => console.log(err));
+      },
+
+      theme: {
+        color: "#3399cc"
+      }
+    };
+
+    const razorpay =
+      new window.Razorpay(options);
+
+    razorpay.open();
+
+  } catch (error) {
+
+    console.log(error);
+
+    toast.error("Payment Failed");
+
   }
+}
 
   //  TOTAL CALCULATION
   const total = cart.reduce(

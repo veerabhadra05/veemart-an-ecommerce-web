@@ -26,7 +26,7 @@ const Register = () => {
 
     // Basic validation
     if (!formData.name || !formData.email || !formData.password) {
-      alert("Please fill required fields");
+      toast.warn('Please fill all required fields')
       return;
     }
 
@@ -44,9 +44,9 @@ const Register = () => {
       })
       .catch((err) => {
         if(err.response){
-          alert(err.response.data.message)
+          toast.error(err.response.data.message)
         }else{
-          alert('Server error')
+          toast.error(err.response.data.message)
         }
         console.log(err);
       });
@@ -56,7 +56,7 @@ const Register = () => {
   return (
     <>
       <div className="register-container">
-        <h1>
+        <h1 className="register-heading">
           Welcome to <span className="title">Vee<span>Mart</span></span>
         </h1>
 

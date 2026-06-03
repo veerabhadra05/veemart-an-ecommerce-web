@@ -3,6 +3,7 @@ import axios from 'axios'
 import Nav from '../components/Nav'
 import Footer from '../components/Footer'
 import API_URL from "../api";
+import { toast } from 'react-toastify';
 
 const Products = () => {
     const [products,setProducts] = useState([])
@@ -48,7 +49,7 @@ const Products = () => {
         })
         .then(res=>{
             setViewDetails(false)
-            alert(res.data.message)
+            toast.success(res.data.message)
         })
         .catch(err=>console.log(err))
     }
@@ -91,19 +92,21 @@ const Products = () => {
                 <p><b>Description:</b> {productData.description}</p>
 
                 {/* STOCK */}
-                <p className='stock'>
+                <p className='stock' style={{color:productData.stock>0 ? 'green' : 'red'}}>
                     {productData.stock > 0 ? 'In Stock' : 'Out of Stock'}
+                    
                 </p>
 
                 {/*QUANTITY SELECTOR */}
                 <div style={{marginTop:"10px"}}>
-                    <button onClick={()=>setQuantity(q => q > 1 ? q-1 : 1)}>-</button>
+                    <button className='quantity-btns' onClick={()=>setQuantity(q => q > 1 ? q-1 : 1)}>-</button>
                     <span style={{margin:"0 10px"}}>{quantity}</span>
-                    <button onClick={()=>setQuantity(q => q+1)}>+</button>
+                    <button className='quantity-btns' onClick={()=>setQuantity(q => q+1)}>+</button>
                 </div>
 
                 {/*ADD TO CART BUTTON */}
                 <button 
+                    className='cart-btn'
                     onClick={handleAddToCart}
                     disabled={productData.stock === 0}
                     style={{marginTop:"15px"}}

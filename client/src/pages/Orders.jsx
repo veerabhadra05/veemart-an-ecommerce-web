@@ -40,6 +40,7 @@ const Orders = () => {
             <h3>Order ID: {order.order_id}</h3>
             <p>Status: {order.status}</p>
             <p>Payment: {order.payment_status}</p>
+            <p>Total: ₹{order.total_amount}</p>
             <p>Date: {order.created_at}</p>
 
             <div>
