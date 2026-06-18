@@ -105,20 +105,17 @@ def login():
 
 @app.route("/add-to-cart", methods=["POST"])
 def add_to_cart():
-
     data = request.json
-
+    
     user_id = data["user_id"]
     product_id = data["product_id"]
     quantity = data["quantity"]
-
     existing = cart_collection.find_one({
         "user_id": user_id,
         "product_id": product_id
     })
 
     if existing:
-
         cart_collection.update_one(
             {"_id": existing["_id"]},
             {
@@ -127,9 +124,7 @@ def add_to_cart():
                 }
             }
         )
-
     else:
-
         cart_collection.insert_one({
             "user_id": user_id,
             "product_id": product_id,
@@ -142,15 +137,11 @@ def add_to_cart():
 
 @app.route("/cart/<user_id>", methods=["GET"])
 def get_cart(user_id):
-
     cart_items = list(cart_collection.find({
         "user_id": user_id
     }))
-
     result = []
-
     for item in cart_items:
-
         product = products_collection.find_one({
             "_id": ObjectId(item["product_id"])
         })
@@ -167,7 +158,6 @@ def get_cart(user_id):
 
 @app.route("/cart/<id>", methods=["DELETE"])
 def remove_from_cart(id):
-
     cart_collection.delete_one({
         "_id": ObjectId(id)
     })
@@ -180,11 +170,8 @@ def remove_from_cart(id):
 
 @app.route('/products', methods=['GET'])
 def get_products():
-
     products = list(products_collection.find())
-
     result = []
-
     for product in products:
 
         result.append({
@@ -221,15 +208,12 @@ def get_product(id):
 
 @app.route("/orders/<user_id>", methods=["GET"])
 def get_orders(user_id):
-
     orders = list(orders_collection.find({
         "user_id": user_id
     }))
-
     result = []
 
     for order in orders:
-
         result.append({
             "order_id": str(order["_id"]),
             "status": order["status"],
@@ -245,15 +229,13 @@ def get_orders(user_id):
 
 @app.route("/admin/add-product", methods=["POST"])
 def add_product():
-
     data = request.json
-
     products_collection.insert_one({
         "name": data["name"],
         "image": data["image"],
-        "price": data["price"],
+        "price": int(data["price"]),
         "description": data["description"],
-        "stock": data["stock"],
+        "stock": int(data["stock"]),
         "category": data["category"]
     })
 
@@ -264,7 +246,6 @@ def add_product():
 
 @app.route("/admin/product/<id>", methods=["DELETE"])
 def delete_product(id):
-
     products_collection.delete_one({
         "_id": ObjectId(id)
     })
@@ -275,18 +256,16 @@ def delete_product(id):
 
 @app.route("/admin/product/<id>", methods=["PUT"])
 def update_product(id):
-
     data = request.json
-
     products_collection.update_one(
         {"_id": ObjectId(id)},
         {
             "$set": {
                 "name": data["name"],
                 "image": data["image"],
-                "price": data["price"],
+                "price": int(data["price"]),
                 "description": data["description"],
-                "stock": data["stock"],
+                "stock":int(data["stock"]),
                 "category": data["category"]
             }
         }
@@ -299,43 +278,27 @@ def update_product(id):
 
 @app.route("/admin/orders", methods=["GET"])
 def get_all_orders():
-
     orders = list(orders_collection.find())
-
     result = []
-
     for order in orders:
-
         result.append({
-
             "_id": str(order["_id"]),
-
             "user_id": order["user_id"],
-
             "status": order["status"],
-
             "payment_status": order["payment_status"],
-
             "items": order["items"]
-
         })
 
     return jsonify(result)
 
 @app.route("/admin/order-status/<id>", methods=["PUT"])
 def update_order_status(id):
-
     data = request.json
-
     orders_collection.update_one(
-
         {"_id": ObjectId(id)},
-
         {
             "$set": {
-
                 "status": data["status"]
-
             }
         }
     )
@@ -346,11 +309,8 @@ def update_order_status(id):
 
 @app.route("/admin/stats", methods=["GET"])
 def admin_stats():
-
     products = products_collection.count_documents({})
-
     orders = orders_collection.count_documents({})
-
     users = users_collection.count_documents({})
 
     return jsonify({
@@ -367,7 +327,6 @@ def verify_payment():
     data = request.json
 
     try:
-
         razorpay_client.utility.verify_payment_signature({
             "razorpay_order_id": data["razorpay_order_id"],
             "razorpay_payment_id": data["razorpay_payment_id"],
@@ -375,24 +334,18 @@ def verify_payment():
         })
 
         user_id = data["user_id"]
-
         cart_items = list(cart_collection.find({
             "user_id": user_id
         }))
-
         order_items = []
         total_amount = 0
 
         for item in cart_items:
-
             product = products_collection.find_one({
                 "_id": ObjectId(item["product_id"])
             })
-
             subtotal = product["price"] * item["quantity"]
-
             total_amount += subtotal
-
             order_items.append({
                 "product_id": item["product_id"],
                 "name": product["name"],
@@ -402,23 +355,15 @@ def verify_payment():
             })
 
         orders_collection.insert_one({
-
             "user_id": user_id,
-
             "status": "Placed",
-
             "payment_status": "PAID",
-
             "total_amount": total_amount,
-
             "created_at": ist_now.strftime("%Y-%m-%d %I:%M:%S %p"),
-
             "razorpay_order_id":
                 data["razorpay_order_id"],
-
             "razorpay_payment_id":
                 data["razorpay_payment_id"],
-
             "items": order_items
         })
 
@@ -431,7 +376,6 @@ def verify_payment():
         })
 
     except Exception as e:
-
         return jsonify({
             "success": False,
             "error": str(e)
@@ -439,24 +383,16 @@ def verify_payment():
 
 @app.route("/create-razorpay-order", methods=["POST"])
 def create_razorpay_order():
-
     data = request.json
-
     user_id = data["user_id"]
-
     cart_items = list(
     cart_collection.find({
         "user_id": user_id
     }))
-
     amount = 0
-
     for item in cart_items:
-
         product = products_collection.find_one({"_id": ObjectId(item["product_id"])})
-
         amount += (product["price"]* item["quantity"])
-
     order = razorpay_client.order.create({
         "amount": amount * 100,
         "currency": "INR"

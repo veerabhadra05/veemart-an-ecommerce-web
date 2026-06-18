@@ -12,29 +12,21 @@ const AddProduct = () => {
     if(!user || user.role !== "admin") {
         window.location.href = "/login";
     }
-
     const [formData, setFormData] = useState({
-
         name: "",
         image: "",
         price: "",
         description: "",
         stock: "",
         category: ""
-
     });
 
     const [preview, setPreview] = useState("");
-
     function handleChange(e) {
-
         const { name, value } = e.target;
-
         setFormData({
-
             ...formData,
             [name]: value
-
         });
 
         if(name === "image") {
@@ -43,17 +35,11 @@ const AddProduct = () => {
     }
 
     function handleSubmit(e) {
-
         e.preventDefault();
-
         axios.post(`${API_URL}/admin/add-product`, formData)
-
             .then((res) => {
-
                 alert(res.data.message);
-
                 setFormData({
-
                     name: "",
                     image: "",
                     price: "",
@@ -68,31 +54,25 @@ const AddProduct = () => {
             })
 
             .catch((err) => {
-
                 console.log(err);
-
                 alert("Failed to add product");
-
             });
     }
 
     return (
 
-        <div className="flex min-h-screen bg-gray-100">
-
+        <div className="admin-layout">
             <AdminSidebar />
-
-            <div className="flex-1 p-8">
-
-                <h1 className="text-3xl font-bold mb-8">
+            <div className="main-content">
+                <h1 className="page-title">
                     Add Product
                 </h1>
 
-                <div className="bg-white p-8 rounded-xl shadow-md max-w-3xl">
+                <div className="form-box">
 
                     <form
                         onSubmit={handleSubmit}
-                        className="flex flex-col gap-5"
+                        className="form-layout"
                     >
 
                         <input
@@ -101,7 +81,7 @@ const AddProduct = () => {
                             placeholder="Product Name"
                             value={formData.name}
                             onChange={handleChange}
-                            className="border p-3 rounded-md"
+                            className=""
                             required
                         />
 
@@ -111,7 +91,7 @@ const AddProduct = () => {
                             placeholder="Image URL"
                             value={formData.image}
                             onChange={handleChange}
-                            className="border p-3 rounded-md"
+                            className=""
                             required
                         />
 
@@ -121,7 +101,7 @@ const AddProduct = () => {
                                 <img
                                     src={preview}
                                     alt="preview"
-                                    className="w-40 h-40 object-cover rounded-md border"
+                                    className="preview-img"
                                 />
                             )
                         }
@@ -132,7 +112,7 @@ const AddProduct = () => {
                             placeholder="Price"
                             value={formData.price}
                             onChange={handleChange}
-                            className="border p-3 rounded-md"
+                            className=""
                             required
                         />
 
@@ -142,7 +122,7 @@ const AddProduct = () => {
                             placeholder="Stock"
                             value={formData.stock}
                             onChange={handleChange}
-                            className="border p-3 rounded-md"
+                            className=""
                             required
                         />
 
@@ -152,7 +132,7 @@ const AddProduct = () => {
                             placeholder="Category"
                             value={formData.category}
                             onChange={handleChange}
-                            className="border p-3 rounded-md"
+                            className=""
                             required
                         />
 
@@ -162,13 +142,13 @@ const AddProduct = () => {
                             value={formData.description}
                             onChange={handleChange}
                             rows="5"
-                            className="border p-3 rounded-md"
+                            className=""
                             required
                         />
 
                         <button
                             type="submit"
-                            className="bg-black text-white py-3 rounded-md hover:bg-gray-800 transition"
+                            className="primary-btn"
                         >
                             Add Product
                         </button>

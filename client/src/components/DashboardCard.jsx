@@ -4,23 +4,23 @@ const DashboardCard = ({ title, value, icon }) => {
 
     return (
 
-        <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 hover:shadow-md transition">
+        <div className="dashboard-card">
 
-            <div className="flex items-center justify-between">
+            <div className="card-top">
 
                 <div>
 
-                    <p className="text-gray-500 text-sm">
+                    <p className="card-label">
                         {title}
                     </p>
 
-                    <h2 className="text-3xl font-bold mt-2 text-gray-800">
+                    <h2 className="card-value">
                         {value}
                     </h2>
 
                 </div>
 
-                <div className="text-4xl">
+                <div className="card-icon">
                     {icon}
                 </div>
 

@@ -1,22 +1,32 @@
 import React, { useEffect, useState } from 'react';
-
 import axios from 'axios';
-
 import { useParams, useNavigate } from 'react-router-dom';
-
+import { toast } from 'react-toastify';
 import API_URL from '../../api';
 import AdminSidebar from '../../components/AdminSidebar';
+import Loader2 from '../../components/Loader2';
 
 const EditProduct = () => {
 
     const { id } = useParams();
-
+    const [categories, setCategories] = useState([])
     const navigate = useNavigate();
+    const [isloading, setIsloading] = useState(false)
 
     const user = JSON.parse(localStorage.getItem("user"));
 
     if(!user || user.role !== "admin") {
         window.location.href = "/login";
+    }
+
+    function fetchCategories(){
+        axios.get(`${API_URL}/categories`)
+        .then((res)=>{
+            setCategories(res.data)
+        })
+        .catch((err)=>{
+            console.log(err)
+        })
     }
 
     const [formData, setFormData] = useState({
@@ -31,89 +41,76 @@ const EditProduct = () => {
     });
 
     useEffect(() => {
-
+    
         fetchProduct();
+        fetchCategories();
 
     }, []);
 
     function fetchProduct() {
-
+        setIsloading(true)
         axios.get(`${API_URL}/products/${id}`)
-
             .then((res) => {
-
                 setFormData({
-
                     name: res.data.title,
                     image: res.data.image,
                     price: res.data.price,
                     description: res.data.description,
                     stock: res.data.stock,
                     category: res.data.category || ""
-
                 });
 
             })
 
             .catch((err) => {
-
                 console.log(err);
-
-            });
+            })
+            .finally(()=>{
+                setIsloading(false)
+            })
+            
     }
 
     function handleChange(e) {
-
         const { name, value } = e.target;
-
         setFormData({
-
             ...formData,
             [name]: value
-
         });
     }
 
     function handleSubmit(e) {
-
+        setIsloading(true)
         e.preventDefault();
-
         axios.put(`${API_URL}/admin/product/${id}`, formData)
-
             .then((res) => {
-
-                alert(res.data.message);
-
+                toast.success(res.data.message);
                 navigate('/admin/products');
-
             })
 
             .catch((err) => {
-
                 console.log(err);
-
-                alert("Update failed");
-
-            });
+                toast.error('Update failed')
+            })
+            .finally(()=>setIsloading(false))
     }
 
     return (
 
-        <div className="flex min-h-screen bg-gray-100">
+        <div className="admin-layout">
 
             <AdminSidebar />
+            <div className="main-content">
 
-            <div className="flex-1 p-8">
-
-                <h1 className="text-3xl font-bold mb-8">
+                <h1 className="page-title">
                     Edit Product
                 </h1>
 
-                <div className="bg-white p-8 rounded-xl shadow-md max-w-3xl">
+                <div className="form-box">
 
                     <form
                         onSubmit={handleSubmit}
-                        className="flex flex-col gap-5"
+                        className="form-layout"
                     >
 
                         <input
@@ -122,7 +119,7 @@ const EditProduct = () => {
                             placeholder="Product Name"
                             value={formData.name}
                             onChange={handleChange}
-                            className="border p-3 rounded-md"
+                            className=""
                             required
                         />
 
@@ -132,15 +129,19 @@ const EditProduct = () => {
                             placeholder="Image URL"
                             value={formData.image}
                             onChange={handleChange}
-                            className="border p-3 rounded-md"
+                            className=""
                             required
                         />
 
-                        <img
+                        { formData.image &&
+                            <img
                             src={formData.image}
                             alt=""
-                            className="w-40 h-40 object-cover rounded-md border"
+                            height={'100px'}
+                            width={'100px'}
+                            className="preview-img"
                         />
+                        }
 
                         <input
                             type="number"
@@ -148,7 +149,7 @@ const EditProduct = () => {
                             placeholder="Price"
                             value={formData.price}
                             onChange={handleChange}
-                            className="border p-3 rounded-md"
+                            className=""
                             required
                         />
 
@@ -158,19 +159,18 @@ const EditProduct = () => {
                             placeholder="Stock"
                             value={formData.stock}
                             onChange={handleChange}
-                            className="border p-3 rounded-md"
+                            className=""
                             required
                         />
 
-                        <input
-                            type="text"
-                            name="category"
-                            placeholder="Category"
-                            value={formData.category}
-                            onChange={handleChange}
-                            className="border p-3 rounded-md"
-                            required
-                        />
+                        <select value={formData.category} onChange={handleChange} name='category' required>
+                            <option value='' disabled>select category..</option>
+                            {
+                                categories.map((category)=>(
+                                    <option key={category.id} value={category.name}>{category.name}</option>
+                                ))
+                            }
+                        </select>
 
                         <textarea
                             name="description"
@@ -178,13 +178,13 @@ const EditProduct = () => {
                             value={formData.description}
                             onChange={handleChange}
                             rows="5"
-                            className="border p-3 rounded-md"
+                            className=""
                             required
                         />
 
                         <button
                             type="submit"
-                            className="bg-black text-white py-3 rounded-md hover:bg-gray-800"
+                            className="primary-btn"
                         >
                             Update Product
                         </button>
@@ -194,6 +194,9 @@ const EditProduct = () => {
                 </div>
 
             </div>
+            {
+                isloading && <Loader2/>
+            }
 
         </div>
     );

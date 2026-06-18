@@ -17,45 +17,36 @@ const Dashboard = () => {
     if(!user || user.role !== "admin") {
     window.location.href = "/login";
 }
-
     useEffect(() => {
-
         axios.get(`${API_URL}/admin/stats`)
-
             .then((res) => {
-
                 setStats(res.data);
-
             })
-
             .catch((err) => {
-
                 console.log(err);
-
             });
-
     }, []);
 
     return (
-        <div className="flex min-h-screen bg-[#f5f7fb]">
+        <div className="admin-layout">
 
     <AdminSidebar />
 
-    <div className="flex-1 p-10">
+    <div className="main-content">
 
-        <div className="mb-10">
+        <div className="">
 
-            <h1 className="text-4xl font-bold text-gray-800">
+            <h1 className="page-title">
                 Dashboard
             </h1>
 
-            <p className="text-gray-500 mt-2">
+            <p className="subtitle">
                 Manage your ecommerce store
             </p>
 
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div className="dashboard-grid">
 
             <DashboardCard
                 title="Total Products"

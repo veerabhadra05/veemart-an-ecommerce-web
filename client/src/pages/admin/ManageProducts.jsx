@@ -22,19 +22,13 @@ const ManageProducts = () => {
     }, []);
 
     function fetchProducts() {
-
         axios.get(`${API_URL}/products`)
-
             .then((res) => {
-
                 setProducts(res.data);
-
             })
 
             .catch((err) => {
-
                 console.log(err);
-
             });
     }
 
@@ -49,62 +43,51 @@ const ManageProducts = () => {
             axios.delete(`${API_URL}/admin/product/${id}`)
 
                 .then((res) => {
-
                     alert(res.data.message);
-
                     fetchProducts();
-
                 })
-
                 .catch((err) => {
-
                     console.log(err);
-
                 });
         }
     }
 
     return (
 
-        <div className="flex bg-gray-100 min-h-screen">
-
+        <div className="admin-layout">
             <AdminSidebar />
+            <div className="main-content">
 
-            <div className="flex-1 p-8">
-
-                <div className="flex justify-between items-center mb-8">
-
-                    <h1 className="text-3xl font-bold">
+                <div className="">
+                    <h1 className="page-title">
                         Manage Products
                     </h1>
-
                 </div>
 
-                <div className="overflow-x-auto bg-white rounded-xl shadow-md">
+                <div className="table-wrapper">
+                    <table className="">
 
-                    <table className="w-full text-sm">
-
-                        <thead className="bg-gray-200">
+                        <thead className="">
 
                             <tr>
 
-                                <th className="p-4 text-left">
+                                <th className="">
                                     Image
                                 </th>
 
-                                <th className="p-4 text-left">
+                                <th className="">
                                     Name
                                 </th>
 
-                                <th className="p-4 text-left">
+                                <th className="">
                                     Price
                                 </th>
 
-                                <th className="p-4 text-left">
+                                <th className="">
                                     Stock
                                 </th>
 
-                                <th className="p-4 text-left">
+                                <th className="">
                                     Actions
                                 </th>
 
@@ -122,40 +105,42 @@ const ManageProducts = () => {
                                         className="border-b hover:bg-gray-50 transition"
                                     >
 
-                                        <td className="p-4">
+                                        <td className="action-buttons">
 
                                             <img
                                                 src={product.image}
                                                 alt={product.name}
-                                                className="w-16 h-16 object-cover rounded-lg border"
+                                                height={'100px'}
+                                                width={'100px'}
+                                                className="table-img"
                                             />
 
                                         </td>
 
-                                        <td className="p-4">
+                                        <td className="">
                                             {product.title}
                                         </td>
 
-                                        <td className="p-4">
+                                        <td className="">
                                             ₹{product.price}
                                         </td>
 
-                                        <td className="p-4">
+                                        <td className="">
                                             {product.stock}
                                         </td>
 
-                                        <td className="p-4 flex gap-3">
+                                        <td className="action-buttons">
 
                                             <button
                                                 onClick={() => navigate(`/admin/edit-product/${product.id}`)}
-                                                className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg transition"
+                                                className="edit-btn"
                                             >
                                                 Edit
                                             </button>
 
                                             <button
                                                 onClick={() => handleDelete(product._id)}
-                                                className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg transition"
+                                                className="delete-btn"
                                             >
                                                 Delete
                                             </button>

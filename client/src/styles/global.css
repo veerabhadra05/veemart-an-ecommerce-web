@@ -1,12 +1,35 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap');
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
 
 * {
     padding: 0;
     margin: 0;
     box-sizing: border-box;
+}
+/* Notify message */
+.notify-container{
+    display: flex;
+    justify-content: center;
+}
+.notify-msg{
+    background-color: black;
+    color: rgb(255, 157, 0);
+    border-radius: 30px;
+    position: fixed;
+    bottom: 20%;
+    padding: 20px;
+    font-weight: 900;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    animation: popup 0.2s ease-in forwards;
+}
+@keyframes popup {
+    from{
+        opacity: 0;
+        transform: translateY(100px);
+    }
+    to{
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 /* loader */
 .loader-overlay{
@@ -560,12 +583,6 @@ ul {
     color: orangered;
     font-size: 35px;
     margin: 20px;
-}
-
-
-/* Admin Pages */
-.sidebar {
-    background-color: black;
 }
 
 /* =========================

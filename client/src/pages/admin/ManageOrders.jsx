@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
-
 import axios from 'axios';
-
+import { toast } from 'react-toastify';
 import API_URL from '../../api';
 import AdminSidebar from '../../components/AdminSidebar';
 
@@ -22,76 +21,57 @@ const ManageOrders = () => {
     }, []);
 
     function fetchOrders() {
-
         axios.get(`${API_URL}/admin/orders`)
-
-            .then((res) => {
-
+           .then((res) => {
                 setOrders(res.data);
-
             })
-
             .catch((err) => {
-
                 console.log(err);
-
             });
     }
 
     function handleStatusChange(orderId, status) {
-
         axios.put(`${API_URL}/admin/order-status/${orderId}`, {
-
             status
-
         })
-
         .then((res) => {
-
-            alert(res.data.message);
-
+            toast.info(res.data.message)
             fetchOrders();
-
         })
 
         .catch((err) => {
-
             console.log(err);
-
         });
     }
 
     return (
 
-        <div className="flex min-h-screen bg-gray-100">
-
+        <div className="admin-layout">
             <AdminSidebar />
-
-            <div className="flex-1 p-8">
-
-                <h1 className="text-3xl font-bold mb-8">
+            <div className="main-content">
+                <h1 className="page-title">
                     Manage Orders
                 </h1>
 
-                <div className="flex flex-col gap-6">
+                <div className="">
 
                     {
                         orders.map((order) => (
 
                             <div
                                 key={order._id}
-                                className="bg-white p-6 rounded-xl shadow-md"
+                                className="orders-list"
                             >
 
-                                <div className="flex justify-between items-center mb-5">
+                                <div className="order-card">
 
                                     <div>
 
-                                        <h2 className="font-bold text-lg">
+                                        <h2 className="order-header">
                                             Order ID:
                                         </h2>
 
-                                        <p className="text-gray-500 break-all">
+                                        <p className="">
                                             {order._id}
                                         </p>
 
@@ -107,7 +87,7 @@ const ManageOrders = () => {
                                                     e.target.value
                                                 )
                                             }
-                                            className="border p-2 rounded-md"
+                                            className="status-select"
                                         >
 
                                             <option value="Pending">
@@ -136,25 +116,25 @@ const ManageOrders = () => {
 
                                 </div>
 
-                                <div className="flex flex-col gap-5">
+                                <div className="order-items">
 
                                     {
                                         order.items.map((item, index) => (
 
                                             <div
                                                 key={index}
-                                                className="flex items-center gap-5 border rounded-lg p-4"
+                                                className="order-item"
                                             >
 
                                                 <img
                                                     src={item.image}
                                                     alt=""
-                                                    className="w-24 h-24 object-cover rounded-md"
+                                                    className="order-img"
                                                 />
 
                                                 <div>
 
-                                                    <h3 className="font-semibold text-lg">
+                                                    <h3 className="">
                                                         {item.name}
                                                     </h3>
 

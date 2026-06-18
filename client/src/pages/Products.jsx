@@ -6,6 +6,7 @@ import API_URL from "../api";
 import { toast } from 'react-toastify';
 import Loader from '../components/Loader';
 import Loader2 from '../components/Loader2';
+import Message from '../components/Message';
 
 const Products = () => {
     const [products,setProducts] = useState([])
@@ -14,6 +15,8 @@ const Products = () => {
     const [quantity,setQuantity] = useState(1)  
     const [isloading,setIsloading] = useState(false)
     const [ismodalloading, setIsmodalloading] = useState(false)
+    const [notification,setnotification] = useState(false)
+    const [notifymsg,setnotifymsg] = useState('')
 
     function fetchProducts(){
         setIsloading(true)
@@ -50,11 +53,17 @@ const Products = () => {
     // ADD TO CART FUNCTION
     function handleAddToCart(){
         const user = JSON.parse(localStorage.getItem("user"))
-        setIsmodalloading(true)
         if(!user || !user._id){
-            alert("Please login first")
+            setnotification(true)
+            setnotifymsg('Please Login !')
+            setTimeout(() => {
+                setnotification(false)
+                setnotifymsg('')
+            }, 3000);
+            setViewDetails(false)
             return
         }
+        setIsmodalloading(true)
 
         axios.post(`${API_URL}/add-to-cart`,{
             user_id: user._id,
@@ -79,7 +88,7 @@ const Products = () => {
                 products.map((product)=>(
                     <div className="product-card" key={product.id}>
                         <h3>{product.title}</h3>
-                        {product.image ? <img src={product.image} alt="" height={'200px'} width={'200px'} /> : <ImageLoader/>}
+                        {product.image ? <img src={`${product.image}`} alt="product image" height={'200px'} width={'200px'} /> : <ImageLoader/>}
                         <p><b>Price: </b>₹{product.price}</p>
 
                         {/*STOCK DISPLAY */}
@@ -139,9 +148,11 @@ const Products = () => {
         }
 
         { isloading &&
-            <Loader/>
+            <Loader2/>
         }
-
+        {
+            notification && <Message message={notifymsg}/>
+        }
         <Footer/>
     </>
   )
