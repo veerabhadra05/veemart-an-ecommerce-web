@@ -4,18 +4,26 @@ import Footer from "../components/Footer";
 import axios from "axios";
 import { Link } from "react-router-dom";
 import API_URL from "../api";
+import Loader from "../components/Loader";
 
 const Home = () => {
 
   const [categories, setCategories] = useState([]);
   const [search, setSearch] = useState("");
+  const [isloading, setIsloading] = useState(false);
 
   function fetchData() {
+    setIsloading(true)
     axios.get(`${API_URL}/categories`)
       .then(x => {
+        setIsloading(false)
         setCategories(x.data);
       })
-      .catch(err => console.log(err));
+      .catch(err => {
+        setIsloading(false)
+        toast.error('Failed to load products')
+        console.log(err)
+      });
   }
 
   useEffect(() => {
@@ -38,7 +46,7 @@ const Home = () => {
       </section>
 
         <h2 className="category-heading" >
-          Shop by Category
+          Available Categories
         </h2>
      
 
@@ -50,7 +58,10 @@ const Home = () => {
             <h3>{cat.name}</h3>
           </div>
         ))}
-
+      { isloading && 
+          <Loader/>
+      }
+    
       </section>
 
       <Footer />

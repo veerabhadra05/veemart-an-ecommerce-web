@@ -4,39 +4,53 @@ import Nav from '../components/Nav'
 import Footer from '../components/Footer'
 import API_URL from "../api";
 import { toast } from 'react-toastify';
+import Loader from '../components/Loader';
+import Loader2 from '../components/Loader2';
 
 const Products = () => {
     const [products,setProducts] = useState([])
     const [viewDetails,setViewDetails] = useState(false)
     const [productData,setProductData] = useState({})
     const [quantity,setQuantity] = useState(1)  
+    const [isloading,setIsloading] = useState(false)
+    const [ismodalloading, setIsmodalloading] = useState(false)
 
     function fetchProducts(){
+        setIsloading(true)
         axios.get(`${API_URL}/products`)
-        .then(x=>setProducts(x.data))
-        .catch(err=>console.log(err))
+        .then(x=>{
+            setIsloading(false)
+            setProducts(x.data)
+        })
+        .catch(err=>{
+            setIsloading(false)
+            console.log(err)
+        })
     }
 
     useEffect(()=>{
         fetchProducts()
     },[])
 
+    
     function handleView(id){
-
-        setQuantity(1)   // ✅ reset quantity
+        setIsmodalloading(true)
+        setQuantity(1)   //reset quantity
         axios.get(`${API_URL}/products/${id}`)
         .then(x=>{
+            setIsmodalloading(false)
             setProductData(x.data)
             setViewDetails(true)
-            console.log(x.data)
         })
-        .catch(err=>console.log(err))
+        .catch(err=>{
+            setIsmodalloading(false)
+            console.log(err)})
     }
 
     // ADD TO CART FUNCTION
     function handleAddToCart(){
         const user = JSON.parse(localStorage.getItem("user"))
-
+        setIsmodalloading(true)
         if(!user || !user._id){
             alert("Please login first")
             return
@@ -48,6 +62,7 @@ const Products = () => {
             quantity: quantity
         })
         .then(res=>{
+            setIsmodalloading(false)
             setViewDetails(false)
             toast.success(res.data.message)
         })
@@ -64,7 +79,7 @@ const Products = () => {
                 products.map((product)=>(
                     <div className="product-card" key={product.id}>
                         <h3>{product.title}</h3>
-                        <img src={product.image} alt="" height={'200px'} width={'200px'} />
+                        {product.image ? <img src={product.image} alt="" height={'200px'} width={'200px'} /> : <ImageLoader/>}
                         <p><b>Price: </b>₹{product.price}</p>
 
                         {/*STOCK DISPLAY */}
@@ -78,8 +93,9 @@ const Products = () => {
                     </div>
                 ))
             }
+            {ismodalloading && <Loader2/>}
         </div>
-
+        
         {
         viewDetails && 
         <div className="overlay">
@@ -115,7 +131,15 @@ const Products = () => {
                 </button>
 
             </div>
+            {
+            ismodalloading && <Loader/>
+        }
         </div>
+        
+        }
+
+        { isloading &&
+            <Loader/>
         }
 
         <Footer/>

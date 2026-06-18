@@ -3,20 +3,26 @@ import axios from "axios";
 import Nav from "../components/Nav";
 import API_URL from "../api";
 import { toast } from "react-toastify";
+import Loader from "../components/Loader";
 
 const Cart = () => {
   const [cart, setCart] = useState([]);
+  const [isloading, setIsloading] = useState(false)
 
   const user = JSON.parse(localStorage.getItem("user"));
 
   function fetchCart() {
     if (!user) return;
+    setIsloading(true)
 
     axios.get(`${API_URL}/cart/${user._id}`)
       .then((res) => {
+        setIsloading(false)
         setCart(res.data);
       })
-      .catch((err) => console.log(err));
+      .catch((err) => {
+        setIsloading(false)
+        console.log(err)});
   }
 
   useEffect(() => {
@@ -25,6 +31,7 @@ const Cart = () => {
 
   //  REMOVE ITEM
   function handleRemove(id) {
+    setIsloading(true)
     axios.delete(`${API_URL}/cart/${id}`)
       .then(() => {
         fetchCart();
@@ -35,7 +42,7 @@ const Cart = () => {
   //  PLACE ORDER
 async function handleOrder() {
   try {
-
+    setIsloading(true)
     const orderResponse = await axios.post(
       `${API_URL}/create-razorpay-order`,
       {
@@ -47,19 +54,12 @@ async function handleOrder() {
 
     const options = {
       key: import.meta.env.VITE_RAZORPAY_KEY_ID,
-
       amount: order.amount,
-
       currency: order.currency,
-
       order_id: order.id,
-
       name: "VeeMart",
-
       description: "Product Purchase",
-
       handler: async function (response) {
-
         const verify = await axios.post(
           `${API_URL}/verify-payment`,
           {
@@ -77,9 +77,11 @@ async function handleOrder() {
         );
 
       if (verify.data.success) {
+        setIsloading(false)
         toast.success("Payment Successful");
         fetchCart();
       } else {
+        setIsloading(false)
         toast.error("Verification Failed");
       }
 
@@ -88,8 +90,15 @@ async function handleOrder() {
 
       theme: {
         color: "#3399cc"
+      },
+
+      modal: {
+      ondismiss: function () {
+      setIsloading(false);
+      toast.info("Payment cancelled");
       }
-    };
+      }
+  };
 
     const razorpay =
       new window.Razorpay(options);
@@ -97,11 +106,13 @@ async function handleOrder() {
     razorpay.open();
 
   } catch (error) {
-
+    setIsloading(false)
     console.log(error);
-
     toast.error("Payment Failed");
 
+  }
+  finally{
+    setIsloading(false)
   }
 }
 
@@ -173,6 +184,9 @@ async function handleOrder() {
           </>
         )}
       </div>
+      {isloading &&
+       <Loader/>
+      }
     </>
   );
 };

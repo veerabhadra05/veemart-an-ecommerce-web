@@ -8,6 +8,6 @@ import { ToastContainer } from 'react-toastify'
 createRoot(document.getElementById('root')).render(
   <BrowserRouter>
     <App/>
-    <ToastContainer autoClose={2000}/>
+    <ToastContainer autoClose={2000} className={"toast-container"}/>
   </BrowserRouter>
 )

@@ -5,9 +5,11 @@ import { toast } from 'react-toastify';
 import API_URL from "../api";
 import showIcon from "../assets/images/show.png";
 import hideIcon from "../assets/images/hide.png";
+import Loader from "../components/Loader";
 
 const Login = () => {
     const [show, setShow] = useState(false)
+    const [isfetching, setIsfetching] = useState(false)
     const [formData, setFormData] = useState({
         email: "",
         password: ""
@@ -26,22 +28,23 @@ const Login = () => {
     }
     function handleSubmit(e) {
         e.preventDefault();
+        setIsfetching(true)
         axios.post(`${API_URL}/login`, formData)
             .then((res) => {
                 if(res.data.message == 'Login Success')
                 {
                 toast.success(res.data.message);
-                console.log(res.data)
+                setIsfetching(false)
                 localStorage.setItem('user', JSON.stringify(res.data.user))
                 if (res.data.user.role === "admin"){
                     navigate('/admin/*')
                 }
                 else{
-                    console.log(res.data.role)
                     navigate('/')
                 }
                 }
                 else if(res.data.message == 'Invalid Credentials'){
+                    setIsfetching(false)
                     toast.error(res.data.message)
                     navigate('/login')
                 }
@@ -82,7 +85,7 @@ const Login = () => {
                             height={'20px'} width={'20px'} />
                     </div>
 
-                    <button type="submit">Login</button>
+                    <button type="submit">{isfetching ? "Logging in...":"Login"}</button>
 
                     <p style={{ marginTop: "10px" }}>
                         Don't have an account?{" "}
@@ -94,6 +97,10 @@ const Login = () => {
                 </form>
             </div>
 
+            {isfetching && 
+                <Loader/>
+                
+            }
         </>
     );
 };

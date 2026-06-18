@@ -8,7 +8,89 @@
     margin: 0;
     box-sizing: border-box;
 }
-
+/* loader */
+.loader-overlay{
+    height: 100%;
+    width: 100%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    backdrop-filter: blur(2px);
+}
+/* HTML: <div class="loader"></div> */
+.loader {
+  width: 50px;
+  aspect-ratio: 1;
+  display: grid;
+  animation: l14 4s infinite;
+}
+.loader::before,
+.loader::after {    
+  content: "";
+  grid-area: 1/1;
+  border: 8px solid;
+  border-radius: 50%;
+  border-color: orange orange #0000 #0000;
+  mix-blend-mode: darken;
+  animation: l14 1s infinite linear;
+}
+.loader::after {
+  border-color: #0000 #0000 rgb(0, 251, 255) rgb(0, 255, 238);
+  animation-direction: reverse;
+}
+@keyframes l14{ 
+  100%{transform: rotate(1turn)}
+}
+/* Image Loader */
+/* HTML: <div class="loader"></div> */
+.image-loader {
+  width: 65px;
+  aspect-ratio: 1;
+  position: relative;
+}
+.image-loader:before,
+.image-loader:after {
+  content: "";
+  position: absolute;
+  border-radius: 50px;
+  box-shadow: 0 0 0 3px inset black;
+  animation: l4 2.5s infinite;
+}
+.image-loader:after {
+  animation-delay: -1.25s;
+}
+@keyframes l4 {
+  0% {
+    inset: 0 35px 35px 0;
+  }
+  12.5% {
+    inset: 0 35px 0 0;
+  }
+  25% {
+    inset: 35px 35px 0 0;
+  }
+  37.5% {
+    inset: 35px 0 0 0;
+  }
+  50% {
+    inset: 35px 0 0 35px;
+  }
+  62.5% {
+    inset: 0 0 0 35px;
+  }
+  75% {
+    inset: 0 0 35px 35px;
+  }
+  87.5% {
+    inset: 0 0 35px 0;
+  }
+  100% {
+    inset: 0 35px 35px 0;
+  }
+}
 /* navbar */
 .nav {
     height: 75px;
@@ -139,10 +221,12 @@
 
 /* product-categories */
 .product-categories {
+    position: relative;
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-    gap: 30px;
-    margin: 30px;
+    gap: 100px;
+    margin: 50px;
+    animation: mountslowly 1s ease-in forwards;
 }
 
 .product-categories img {
@@ -151,7 +235,8 @@
     max-width: 250px;
     background-color: white;
     border-radius: 10px;
-    box-shadow: 0 0 10px black;
+    border: 1px solid;
+    /* box-shadow: 0 0 10px black; */
     background-size: cover;
     transition: all 0.3s ease;
     cursor: pointer;
@@ -191,24 +276,38 @@ ul {
 /* products */
 .products {
     display: flex;
+    min-height: 90vh;
     justify-content: space-evenly;
     align-items: center;
     flex-wrap: wrap;
-    gap: 50px 30px;
-    margin: 40px 20px;
+    gap: 20px 0px;
+    margin: 10px 5px;
 }
 
 .product-card {
+    position: relative;
     height: 320px;
     width: 100%;
     max-width: 280px;
     padding: 10px;
-    box-shadow: 0 0 10px;
-    border-radius: 20px;
+    border: 1px solid rgb(205, 203, 203);
+    border-radius: 5px;
     display: flex;
     flex-direction: column;
     align-items: center;
     transition: all 0.2s ease-in-out;
+    animation: mountslowly 1s ease-out forwards;
+}
+
+@keyframes mountslowly{
+    from {
+    opacity: 0;
+    transform: translateY(40px); /* Starts 40px below its final position */
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);    /* Ends in its exact final position */
+  }
 }
 
 .product-card:hover {
@@ -219,6 +318,18 @@ ul {
     width: 100%;
     max-width: 200px;
     object-fit: contain;
+    animation: imgdisplay 0.5s ease-in backwards;
+}
+
+@keyframes imgdisplay{
+    from{
+        opacity: 0;
+        transform: scale(0.9);
+    }
+    to{
+        opacity: 1;
+        transform: scale(1);
+    }
 }
 
 .product-card button {
@@ -266,6 +377,15 @@ ul {
     border-radius: 20px;
     text-align: justify;
     gap: 20px;
+    animation: loadmodal 0.2s ease-in forwards;
+}
+@keyframes loadmodal {
+    from{
+        transform: scale(0.9);
+    }
+    to{
+        transform: scale(1);
+    }
 }
 .modal img{
     transition: all 0.3s;
@@ -391,21 +511,48 @@ ul {
 
 /* cart */
 .cart-page {
+    min-height: 100vh;
+    /* height: 100%; */
     background-color: antiquewhite;
     padding: 20px;
 }
+.cart-page .item-row{
+    border-bottom: 1px solid grey;
+    animation: displaycard 1s ease-in backwards;
+}
+
 
 /* orders */
 .orders-page {
+    min-height: 90vh;
     background-color: antiquewhite;
     padding: 20px;
+    animation: mountorders 1s ease-in forwards;
 }
-
+@keyframes mountorders{
+    from{
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    to{
+        opacity: 1;
+        transform: translateY(0px);
+    }
+}
 .orders-page .card {
     border: 1px solid rgb(133, 129, 129);
     padding: 10px;
     margin-bottom: 10px;
     border-radius: 10px;
+    animation: displaycard 1s ease-in forwards;
+}
+@keyframes displaycard{
+    from{
+        transform: translateY(-20px);
+    }
+    to{
+        transform: translateY(0);
+    }
 }
 
 .products-heading{
@@ -453,7 +600,7 @@ ul {
 
     .nav {
         padding: 0 10px;
-        position: relative;
+        position: sticky;
     }
 
     .hamburger {
@@ -555,12 +702,21 @@ ul {
     .product-categories {
         display: grid;
         grid-template-columns: 1fr 1fr;
+        justify-items: center;
+        margin: 10px 20px;
+        gap: 20px 10px;
+    }
+    .product-categories .image{
+        max-height: 180px;
+        max-width: 150px;
+        border: 1px solid rgb(218, 215, 215);
     }
 
     .product-categories img {
-        height: 130px;
-        width: 70%;
-        max-width: 200px;
+        border-radius: 5px;
+        height: 140px;
+        width: 140px;
+        border: none;
     }
 
     .category-heading{
@@ -583,8 +739,6 @@ ul {
         width: 90%;
         max-width: 200px;
         padding: 10px;
-        box-shadow: 0 0 10px;
-        border-radius: 20px;
         display: flex;
         flex-direction: column;
         align-items: center;
@@ -650,4 +804,10 @@ ul {
     .footer ul{
         line-height: 15px;
     }
+    /* toastify-mobile */
+    .toast-container {
+    max-width: 90vw; /* Takes up 90% of screen width */
+    width: fit-content;
+    margin: 0 auto;  /* Centers it on screen */
+  }
 }

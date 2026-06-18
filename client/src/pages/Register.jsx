@@ -3,6 +3,7 @@ import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import API_URL from "../api";
+import Loader from "../components/Loader";
 
 const Register = () => {
     const [formData,setFormData] = useState({
@@ -10,7 +11,7 @@ const Register = () => {
         email:"",
         password:""
     });
-    
+    const [isloading, setIsloading] = useState(false)
     const navigate = useNavigate()
 
     function handleChange(e) {
@@ -23,7 +24,7 @@ const Register = () => {
 
   function handleSubmit(e) {
     e.preventDefault();
-
+    setIsloading(true)
     // Basic validation
     if (!formData.name || !formData.email || !formData.password) {
       toast.warn('Please fill all required fields')
@@ -34,6 +35,7 @@ const Register = () => {
     
     axios.post(`${API_URL}/register`, formData)
       .then((res) => {
+        setIsloading(false)
         toast.success(res.data.message);
         navigate('/login')
         setFormData({
@@ -43,6 +45,7 @@ const Register = () => {
         });
       })
       .catch((err) => {
+        setIsloading(false)
         if(err.response){
           toast.error(err.response.data.message)
         }else{
@@ -78,6 +81,7 @@ const Register = () => {
             placeholder="Enter your email"
             value={formData.email}
             onChange={handleChange}
+            required
           />
 
           <label>Password *</label>
@@ -87,6 +91,7 @@ const Register = () => {
             placeholder="Enter password"
             value={formData.password}
             onChange={handleChange}
+            required
           />
 
           <button type="submit">Register</button>
@@ -99,6 +104,9 @@ const Register = () => {
           </p>
         </form>
       </div>
+      {
+        isloading && <Loader/>
+      }
     </>
   );
 };

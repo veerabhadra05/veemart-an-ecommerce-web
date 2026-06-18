@@ -176,52 +176,7 @@ def remove_from_cart(id):
         "message": "Item removed successfully"
     })
 
-# @app.route("/place-order", methods=["POST"])
-# def place_order():
 
-#     data = request.json
-
-#     user_id = data["user_id"]
-
-#     cart_items = list(cart_collection.find({
-#         "user_id": user_id
-#     }))
-
-#     if not cart_items:
-#         return jsonify({
-#             "message": "Cart is empty"
-#         })
-
-#     order_items = []
-
-#     for item in cart_items:
-
-#         product = products_collection.find_one({
-#             "_id": ObjectId(item["product_id"])
-#         })
-
-#         order_items.append({
-#             "product_id": item["product_id"],
-#             "name": product["name"],
-#             "image": product["image"],
-#             "price": product["price"],
-#             "quantity": item["quantity"]
-#         })
-
-#     orders_collection.insert_one({
-#         "user_id": user_id,
-#         "status": "Pending",
-#         "payment_status": "PENDING",
-#         "items": order_items
-#     })
-
-#     cart_collection.delete_many({
-#         "user_id": user_id
-#     })
-
-#     return jsonify({
-#         "message": "Order placed successfully"
-#     })
 
 @app.route('/products', methods=['GET'])
 def get_products():
