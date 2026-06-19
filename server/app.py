@@ -180,7 +180,8 @@ def get_products():
             "image": product["image"],
             "price": product["price"],
             "description": product["description"],
-            "stock": product["stock"]
+            "stock": product["stock"],
+            "category": product["category"] or ""
         })
 
     return jsonify(result)
@@ -201,7 +202,8 @@ def get_product(id):
         "image": product["image"],
         "price": product["price"],
         "description": product["description"],
-        "stock": product["stock"]
+        "stock": product["stock"],
+        "category":product["category"] or ""
     }
 
     return jsonify(result)

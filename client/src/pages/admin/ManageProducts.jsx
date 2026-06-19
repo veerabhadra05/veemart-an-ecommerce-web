@@ -87,6 +87,10 @@ const ManageProducts = () => {
                                     Stock
                                 </th>
 
+                                <th>
+                                    Category
+                                </th>
+
                                 <th className="">
                                     Actions
                                 </th>
@@ -102,7 +106,7 @@ const ManageProducts = () => {
 
                                     <tr
                                         key={product.id}
-                                        className="border-b hover:bg-gray-50 transition"
+                                        className=""
                                     >
 
                                         <td className="action-buttons">
@@ -129,6 +133,10 @@ const ManageProducts = () => {
                                             {product.stock}
                                         </td>
 
+                                        <td>
+                                            {product.category || "Not mentioned"}
+                                        </td>
+
                                         <td className="action-buttons">
 
                                             <button
@@ -139,7 +147,7 @@ const ManageProducts = () => {
                                             </button>
 
                                             <button
-                                                onClick={() => handleDelete(product._id)}
+                                                onClick={() => handleDelete(product.id)}
                                                 className="delete-btn"
                                             >
                                                 Delete

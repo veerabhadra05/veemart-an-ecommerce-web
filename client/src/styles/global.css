@@ -535,13 +535,12 @@ ul {
 /* cart */
 .cart-page {
     min-height: 100vh;
-    /* height: 100%; */
     background-color: antiquewhite;
     padding: 20px;
 }
 .cart-page .item-row{
     border-bottom: 1px solid grey;
-    animation: displaycard 1s ease-in backwards;
+    animation: displaycard 0.3s ease-in backwards;
 }
 
 
@@ -550,7 +549,7 @@ ul {
     min-height: 90vh;
     background-color: antiquewhite;
     padding: 20px;
-    animation: mountorders 1s ease-in forwards;
+    animation: mountorders 0.5s ease-in forwards;
 }
 @keyframes mountorders{
     from{
@@ -567,7 +566,7 @@ ul {
     padding: 10px;
     margin-bottom: 10px;
     border-radius: 10px;
-    animation: displaycard 1s ease-in forwards;
+    animation: displaycard 0.3s ease-in forwards;
 }
 @keyframes displaycard{
     from{

@@ -12,7 +12,6 @@ const EditProduct = () => {
     const [categories, setCategories] = useState([])
     const navigate = useNavigate();
     const [isloading, setIsloading] = useState(false)
-
     const user = JSON.parse(localStorage.getItem("user"));
 
     if(!user || user.role !== "admin") {
@@ -30,14 +29,12 @@ const EditProduct = () => {
     }
 
     const [formData, setFormData] = useState({
-
         name: "",
         image: "",
         price: "",
         description: "",
         stock: "",
         category: ""
-
     });
 
     useEffect(() => {
