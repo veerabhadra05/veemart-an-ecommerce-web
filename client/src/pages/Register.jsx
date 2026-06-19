@@ -46,10 +46,11 @@ const Register = () => {
       })
       .catch((err) => {
         setIsloading(false)
+
         if(err.response){
           toast.error(err.response.data.message)
         }else{
-          toast.error(err.response.data.message)
+          toast.error(err.response || "Something went wrong")
         }
         console.log(err);
       });

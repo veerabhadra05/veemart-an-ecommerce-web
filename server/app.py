@@ -9,8 +9,10 @@ import hmac
 import hashlib
 from datetime import datetime
 from zoneinfo import ZoneInfo
+from flask_bcrypt import Bcrypt
 
 app = Flask(__name__)
+bcrypt = Bcrypt(app)
 CORS(app)
 
 load_dotenv()
@@ -38,6 +40,9 @@ products_collection = db["products"]
 categories_collection = db["categories"]
 cart_collection = db["cart"]
 orders_collection = db["orders"]
+
+def hash_password(password):
+    return (bcrypt.generate_password_hash(password)).decode('utf-8')
 
 @app.route("/")
 def Home():
@@ -71,10 +76,11 @@ def register():
     if existing_user:
         return jsonify({"message": "User already exists"}), 400
 
+    hashed_password = hash_password(data["password"])
     users_collection.insert_one({
         "name": data["name"],
         "email": data["email"],
-        "password": data["password"],
+        "password": hashed_password,
         "role":"user"
     })
 
@@ -86,11 +92,16 @@ def login():
     data = request.json
 
     user = users_collection.find_one({
-        "email": data["email"],
-        "password": data["password"],
+        "email": data["email"]
+    })
+    if user:
+        stored_hash = user['password']
+    else:
+        return jsonify({
+        "message": "Invalid Credentials"
     })
 
-    if user:
+    if bcrypt.check_password_hash(stored_hash, data['password']):
 
         user["_id"] = str(user["_id"])
 
