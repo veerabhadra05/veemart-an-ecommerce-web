@@ -37,17 +37,13 @@ const Orders = () => {
       {orders.length === 0 ? (
         <p>No orders yet</p>
       ) : (
+        
         orders.map((order) => (
+          
           <div
             key={order.order_id}
             className="card"
-          >
-            <h3>Order ID: {order.order_id}</h3>
-            <p>Status: {order.status}</p>
-            <p>Payment: {order.payment_status}</p>
-            <p>Total: ₹{order.total_amount}</p>
-            <p>Date: {order.created_at}</p>
-
+          ><h3>Order ID: {order.order_id}</h3>
             <div>
               {order.items.map((item, index) => (
                 <div
@@ -63,16 +59,40 @@ const Orders = () => {
                   <img
                     src={item.image}
                     alt={item.name}
-                    width="80"
                   />
                   <div>
                     <p>{item.name}</p>
                     <p>₹{item.price}</p>
                     <p>Qty: {item.quantity}</p>
                   </div>
+                  
                 </div>
               ))}
             </div>
+            
+            <p>Status: {order.status}</p>
+            <p>Payment: {order.payment_status}</p>
+            <p>Total: ₹{order.total_amount}</p>
+            <p>Date: {order.created_at}</p>
+
+            
+            {order.delivery_address && (
+              <div className="order-address"
+              >
+                <h4>Delivery Address</h4>
+
+                <p>{order.delivery_address.full_name}</p>
+                <p>{order.delivery_address.mobile}</p>
+                <p>{order.delivery_address.house}</p>
+                <p>{order.delivery_address.area}</p>
+                <p>
+                  {order.delivery_address.city},{" "}
+                  {order.delivery_address.state}
+                </p>
+                <p>{order.delivery_address.pincode}</p>
+              </div>
+            )}
+            
           </div>
         ))
       )}

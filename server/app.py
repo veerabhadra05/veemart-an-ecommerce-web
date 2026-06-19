@@ -233,7 +233,8 @@ def get_orders(user_id):
             "payment_status": order["payment_status"],
             "items": order["items"],
             "total_amount": order["total_amount"],
-            "created_at": order.get("created_at", "")
+            "created_at": order.get("created_at", ""),
+            "delivery_address": order.get("delivery_address", {})
         })
 
     return jsonify(result)
@@ -332,6 +333,91 @@ def admin_stats():
         "users": users - 1
     })
 
+#Address
+@app.route("/user-address/<user_id>", methods=["GET"])
+def get_user_addresses(user_id):
+    user = users_collection.find_one({
+        "_id": ObjectId(user_id)
+    })
+
+    if not user:
+        return jsonify({"message": "User not found"}), 404
+
+    return jsonify(user.get("address", []))
+
+@app.route("/add-address", methods=["POST"])
+def add_address():
+    data = request.json
+    user_id = data["user_id"]
+
+    new_address = {
+        "id": str(ObjectId()),
+        "full_name": data["full_name"],
+        "mobile": data["mobile"],
+        "house": data["house"],
+        "area": data["area"],
+        "city": data["city"],
+        "state": data["state"],
+        "pincode": data["pincode"]
+    }
+
+    users_collection.update_one(
+        {"_id": ObjectId(user_id)},
+        {
+            "$push": {
+                "address": new_address
+            }
+        }
+    )
+
+    return jsonify({
+        "message": "Address Added",
+        "address": new_address
+    })
+
+@app.route("/delete-address/<user_id>/<address_id>", methods=["DELETE"])
+def delete_address(user_id, address_id):
+    users_collection.update_one(
+        {"_id": ObjectId(user_id)},
+        {
+            "$pull": {
+                "address": {"id": address_id}
+            }
+        }
+    )
+
+    return jsonify({
+        "message": "Address deleted"
+    })
+
+@app.route("/edit-address", methods=["PUT"])
+def edit_address():
+    data = request.json
+    user_id = data["user_id"]
+    address_id = data["address_id"]
+
+    users_collection.update_one(
+        {
+            "_id": ObjectId(user_id),
+            "address.id": address_id
+        },
+        {
+            "$set": {
+                "address.$.full_name": data["full_name"],
+                "address.$.mobile": data["mobile"],
+                "address.$.house": data["house"],
+                "address.$.area": data["area"],
+                "address.$.city": data["city"],
+                "address.$.state": data["state"],
+                "address.$.pincode": data["pincode"]
+            }
+        }
+    )
+
+    return jsonify({
+        "message": "Address updated"
+    })
+
 #payments
 
 @app.route("/verify-payment", methods=["POST"])
@@ -373,6 +459,7 @@ def verify_payment():
             "payment_status": "PAID",
             "total_amount": total_amount,
             "created_at": ist_now.strftime("%Y-%m-%d %I:%M:%S %p"),
+            "delivery_address":data["delivery_address"],
             "razorpay_order_id":
                 data["razorpay_order_id"],
             "razorpay_payment_id":
