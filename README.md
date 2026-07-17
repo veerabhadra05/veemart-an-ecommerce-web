@@ -9,7 +9,7 @@ This project was developed as part of my learning journey in full-stack developm
 
 # 🚀 Live Demo
 
-Frontend: https://veemart-web.vercel.app  
+LiveLink: https://veemart-web.vercel.app  
 
 ---
 

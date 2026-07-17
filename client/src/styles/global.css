@@ -244,6 +244,7 @@
 
 /* product-categories */
 .product-categories {
+    min-height: 100vh;
     position: relative;
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
@@ -517,18 +518,18 @@ ul {
     border-color: orange;
 }
 
-.password-field img {
+.password-icon {
     position: absolute;
     right: 15px;
     top: 30%;
     height: 18px;
     width: 18px;
-    opacity: 0.7;
+    opacity: 0.8;
     cursor: pointer;
     transition: 0.2s ease;
 }
 
-.password-field img:hover {
+.password-icon:hover {
     opacity: 1;
 }
 

@@ -87,7 +87,7 @@ const Register = () => {
 
           <label>Password *</label>
           <input
-            type="password"
+            type="text"
             name="password"
             placeholder="Enter password"
             value={formData.password}

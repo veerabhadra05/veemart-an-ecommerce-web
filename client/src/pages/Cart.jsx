@@ -307,7 +307,10 @@ async function handleDeleteAddress(addressId){
               <h2>Total: ₹{total}</h2>
 
               <button
-                onClick={handleOrder}
+                onClick={()=>{
+                  selectedAddress !== null ?
+                  handleOrder() : alert('Select Address to place order !')
+                }}
                 className="btn btn-primary"
                 style={{
                   padding: "10px 20px",
@@ -413,43 +416,50 @@ async function handleDeleteAddress(addressId){
         name="full_name"
         placeholder="Full Name"
         value={addressForm.full_name}
-        onChange={handleAddressChange}/>
+        onChange={handleAddressChange}
+        required/>
 
         <input 
         name="mobile"
         value={addressForm.mobile}
         onChange={handleAddressChange}
-        placeholder="Mobile"/>
+        placeholder="Mobile"
+        required/>
 
         <input 
         name="house"
         value={addressForm.house}
         onChange={handleAddressChange}
-        placeholder="House No"/>
+        placeholder="House No"
+        required/>
 
         <input 
         name="area"
         value={addressForm.area}
         onChange={handleAddressChange}
-        placeholder="Area"/>
+        placeholder="Area"
+        required/>
 
         <input 
         name="city"
         value={addressForm.city}
         onChange={handleAddressChange}
-        placeholder="City"/>
+        placeholder="City"
+        required/>
 
         <input 
         name="state"
         value={addressForm.state}
         onChange={handleAddressChange}
-        placeholder="State"/>
+        placeholder="State"
+        required/>
 
         <input 
         name="pincode"
         value={addressForm.pincode}
         onChange={handleAddressChange}
-        placeholder="Pincode"/>
+        placeholder="Pincode"
+        required/>
       <button> {isEditMode ? "Update" : "Add"}</button>
       
     </form>
