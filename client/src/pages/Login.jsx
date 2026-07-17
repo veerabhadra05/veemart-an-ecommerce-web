@@ -6,6 +6,10 @@ import API_URL from "../api";
 import showIcon from "../assets/images/show.png";
 import hideIcon from "../assets/images/hide.png";
 import Loader from "../components/Loader";
+import { IoEyeOutline } from "react-icons/io5";
+import { IoEyeOffOutline } from "react-icons/io5";
+import { FaEye } from "react-icons/fa";
+import { Eye, EyeOff } from 'lucide-react';
 
 const Login = () => {
     const [show, setShow] = useState(false)
@@ -80,9 +84,9 @@ const Login = () => {
                             onChange={handleChange}
                             required />
 
-                        <img onClick={toggle}
-                            src={show ? hideIcon : showIcon} alt="show|hide"
-                            height={'20px'} width={'20px'} />
+                            <div className="password-icon" onClick={toggle}>
+                                {show ? <EyeOff size={18}/> : <Eye size={18}/>}
+                            </div>
                     </div>
 
                     <button type="submit">{isfetching ? "Logging in...":"Login"}</button>
