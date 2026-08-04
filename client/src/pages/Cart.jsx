@@ -5,6 +5,7 @@ import API_URL from "../api";
 import { toast } from "react-toastify";
 import Loader from "../components/Loader";
 import { FaEdit, FaTrash } from "react-icons/fa";
+import loadRazorpay from "../utils/loadRazorpay";
 
 const Cart = () => {
   const [cart, setCart] = useState([]);
@@ -187,6 +188,13 @@ async function handleDeleteAddress(addressId){
       );
 
       const order = orderResponse.data;
+
+      const loaded = await loadRazorpay();
+
+      if (!loaded) {
+          toast.error("Unable to load Razorpay.");
+          return;
+      }
 
       const options = {
         key: import.meta.env.VITE_RAZORPAY_KEY_ID,
