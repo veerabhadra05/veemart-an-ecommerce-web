@@ -1,4 +1,5 @@
 import React,{ useState, useEffect } from 'react'
+import { useParams } from 'react-router-dom'
 import axios from 'axios'
 import Nav from '../components/Nav'
 import Footer from '../components/Footer'
@@ -17,6 +18,7 @@ const Products = () => {
     const [ismodalloading, setIsmodalloading] = useState(false)
     const [notification,setnotification] = useState(false)
     const [notifymsg,setnotifymsg] = useState('')
+    const { category } = useParams()
 
     function fetchProducts(){
         setIsloading(true)
@@ -31,8 +33,26 @@ const Products = () => {
         })
     }
 
+    function fetchCategorizedProducts(){
+        setIsloading(true)
+        axios.get(`${API_URL}/products/category/${category}`)
+        .then((res)=>{
+            setProducts(res.data)
+            setIsloading(false)
+        })
+        .catch((err)=>{
+            console.log(err)
+            setIsloading(false)
+        })
+    }
+
     useEffect(()=>{
-        fetchProducts()
+        if(category){
+            fetchCategorizedProducts();
+        }
+        else{
+            fetchProducts()
+        }
     },[])
 
     
@@ -88,7 +108,7 @@ const Products = () => {
                 products.map((product)=>(
                     <div className="product-card" key={product.id}>
                         <h3>{product.title}</h3>
-                        {product.image ? <img src={`${product.image}`} alt="product image" height={'200px'} width={'200px'} /> : <ImageLoader/>}
+                        {product.image ? <img src={`${product.image}`} alt="product image" height={'200px'} width={'200px'} loading='lazy' decoding='async' /> : <ImageLoader/>}
                         <p><b>Price: </b>₹{product.price}</p>
 
                         {/*STOCK DISPLAY */}

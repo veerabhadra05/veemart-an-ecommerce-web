@@ -197,6 +197,26 @@ def get_products():
 
     return jsonify(result)
 
+@app.route('/products/category/<category>', methods=['GET'])
+def get_category_products(category):
+    print(category)
+    products = list(products_collection.find({
+        "category": category
+    }))
+    result = []
+
+    for product in products:
+        result.append({
+            "id": str(product["_id"]),
+            "title": product["name"],
+            "image": product["image"],
+            "price": product["price"],
+            "description": product["description"],
+            "stock": product["stock"],
+            "category": product["category"] or ""
+        })
+    return jsonify(result)
+
 @app.route('/products/<id>', methods=['GET'])
 def get_product(id):
 

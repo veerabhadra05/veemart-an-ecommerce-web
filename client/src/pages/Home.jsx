@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import Nav from "../components/Nav";
 import Footer from "../components/Footer";
 import axios from "axios";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import API_URL from "../api";
 import Loader from "../components/Loader";
 
@@ -11,6 +11,7 @@ const Home = () => {
   const [categories, setCategories] = useState([]);
   const [search, setSearch] = useState("");
   const [isloading, setIsloading] = useState(false);
+  const navigate = useNavigate()
 
   function fetchData() {
     setIsloading(true)
@@ -54,7 +55,9 @@ const Home = () => {
 
         {categories.map((cat) => (
           <div key={cat.id} className="image">
-            <img src={cat.image} alt={cat.name} />
+            <button style={{border:'none'}} onClick={()=> navigate(`/products/category/${cat.name}`)}>
+              <img src={cat.image} alt={cat.name} />
+            </button>
             <h3>{cat.name}</h3>
           </div>
         ))}
